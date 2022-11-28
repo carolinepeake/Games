@@ -1,4 +1,5 @@
-import Board from './Board';
+import React from 'react';
+import { Board } from './Board';
 import './App.css';
 
 function App() {

@@ -1,13 +1,25 @@
 import React from 'react';
+import { Hatching } from './Hatching';
 
-export const Blob = () => {
+export const Blob = ({color, shading}) => {
 
   return (
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-    width="845.000000pt" height="1280.000000pt" viewBox="0 0 845.000000 1280.000000"
+    // width="845.000000pt"
+    width="50"
+    // height="1280.000000pt"
+    height="50"
+    viewBox="0 0 845.000000 1280.000000"
+    // viewBox="0 0 33.000000 11.000000"
     preserveAspectRatio="xMidYMid meet">
-      <g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
-      fill="#000000" stroke="none">
+       {color && <Hatching fillColor={color}/>}
+      <g
+      transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)"
+      // transform="translate(0.000000,50.000000) scale(0.100000,-0.100000)"
+      // fill="url(#diagonal-hatch)"
+      // fill="url(#diagonal-hatch)"
+      style={{ stroke: `${color}`, strokeWidth: '250', fill: shading === 'solid' ? `${color}` : shading === 'striped' ? 'url(#diagonal-hatch)' : shading === 'open' ? 'none' : 'black' }}
+      >
       <path d="M5465 12788 c-99 -55 -509 -468 -901 -908 -866 -971 -1773 -2155
       -2464 -3215 -1174 -1800 -1869 -3390 -2049 -4685 -37 -272 -46 -393 -46 -670
       0 -279 9 -390 46 -618 160 -969 752 -1717 1734 -2188 977 -469 2311 -623 3535

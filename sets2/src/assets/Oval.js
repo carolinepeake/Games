@@ -1,63 +1,27 @@
 import React from 'react';
+import { Hatching } from './Hatching';
 
-export const Oval = () => {
-return (
-   <svg
-      xmlns:dc="http://purl.org/dc/elements/1.1/"
-      xmlns:cc="http://creativecommons.org/ns#"
-      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-      xmlns:svg="http://www.w3.org/2000/svg"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-      xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-      width="315.09375"
-      height="142.28125"
-      id="svg2"
-      version="1.1"
-      inkscape:version="0.48.5 r10040"
-      sodipodi:docname="oculus.svg">
-      <defs
-         id="defs4" />
-      <sodipodi:namedview
-         id="base"
-         pagecolor="#ffffff"
-         bordercolor="#666666"
-         borderopacity="1.0"
-         inkscape:pageopacity="0.0"
-         inkscape:pageshadow="2"
-         inkscape:zoom="0.64104762"
-         inkscape:cx="147.02484"
-         inkscape:cy="-31.533691"
-         inkscape:document-units="px"
-         inkscape:current-layer="layer1"
-         showgrid="false"
-         inkscape:window-width="1366"
-         inkscape:window-height="664"
-         inkscape:window-x="-8"
-         inkscape:window-y="-8"
-         inkscape:window-maximized="1"
-         fit-margin-top="0"
-         fit-margin-left="0"
-         fit-margin-right="0"
-         fit-margin-bottom="0" />
+export const Oval = ({color, shading}) => {
+  return (
+    <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+    // width="1280.000000pt"
+    // height="640.000000pt"
+    width="50"
+    height="50"
+    viewBox="0 0 1280.000000 640.000000"
+    preserveAspectRatio="xMidYMid meet">
+      {color && <Hatching fillColor={color}/>}
       <g
-         inkscape:label="Layer 1"
-         inkscape:groupmode="layer"
-         id="layer1"
-         transform="translate(-379.15625,-506.5)">
-         <rect
-            fill="none"
-           // style={ stroke: '#2e1431', strokeWidth: '40', strokeMiterlimit: '4', strokeOpacity: '1', strokeDasharray: 'none', }
-            id="rect2986"
-            width="275.09692"
-            height="102.28572"
-            x="399.14285"
-            y="526.505"
-            ry="97.14286"
-            rx="51.14286" />
+      // transform="translate(0.000000,640.000000) scale(0.100000,-0.100000)"
+      transform="translate(640.000000,960.000000) scale(0.100000,-0.100000) rotate(90)"
+      style={{ stroke: `${color}`, strokeWidth: '250', fill: shading === 'solid' ? `${color}` : shading === 'striped' ? 'url(#diagonal-hatch)' : shading === 'open' ? 'none' : 'black' }}
+      >
+      <path d="M1797 5234 c-836 -114 -1516 -703 -1726 -1495 -44 -164 -61 -283 -68
+      -459 -13 -351 53 -663 206 -977 300 -614 866 -1018 1581 -1130 109 -17 334
+      -18 4610 -18 4276 0 4501 1 4610 18 715 112 1281 516 1581 1130 153 314 219
+      626 206 977 -7 176 -24 295 -68 459 -190 716 -764 1271 -1501 1451 -264 64 93
+      60 -4843 59 -3699 -1 -4507 -4 -4588 -15z"/>
       </g>
-   </svg>
+    </svg>
   );
 };
-
-//style="fill:none;stroke:#2e1431;stroke-width:40;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
