@@ -1,0 +1,33 @@
+   <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+    width="50"
+    height="100"
+    viewBox="0 0 1280.000000 640.000000"
+    preserveAspectRatio="xMidYMid meet">
+      <g
+      transform="translate(640.000000,640.000000) scale(0.100000,-0.100000) rotate(90)"
+     stroke="purple" stroke-width='250' fill='url(#diagonal-hatch)'
+      >
+       <pattern id="diagonal-hatch" width="2000" height="2000"
+      patternTransform="rotate(45 0 0)"
+      patternUnits="userSpaceOnUse" stroke="green" stroke-width="250">
+        <rect x="0" y="0"
+        width="1000" height="1000"
+        fill="green"
+        />
+        <rect x="1000" y="0"
+        width="1000" height="1000"
+        fill="green"
+        />
+        <rect x="0" y="1000"
+        width="1000" height="1000"
+        fill="white"
+        />
+        <rect x="1000" y="1000"
+       width="1000" height="1000"
+        fill="white"/>
+      </pattern>
+      <path d="M3188 4809 c-1748 -874 -3178 -1591 -3178 -1594 0 -3 1445 -727 3210
+      -1610 l3210 -1605 3180 1590 c1749 875 3180 1592 3180 1595 0 4 -6416 3216
+      -6422 3214 -2 0 -1433 -715 -3180 -1590z"/>
+      </g>
+    </svg>

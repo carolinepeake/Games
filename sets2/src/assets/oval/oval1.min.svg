@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="100" version="1.0" viewBox="0 0 1280 640">
+  <g fill="url(#a)" stroke="red" stroke-width="250" transform="matrix(0 -.1 -.1 0 640 960)">
+    <pattern id="a" width="2000" height="2000" stroke="green" stroke-width="250" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+      <path d="M0 0h1000v1000H0zM1000 0h1000v1000H1000z"/>
+      <path fill="#fff" d="M0 1000h1000v1000H0zM1000 1000h1000v1000H1000z"/>
+    </pattern>
+    <path d="M1797 5234C961 5120 281 4531 71 3739c-44-164-61-283-68-459-13-351 53-663 206-977 300-614 866-1018 1581-1130 109-17 334-18 4610-18s4501 1 4610 18c715 112 1281 516 1581 1130 153 314 219 626 206 977-7 176-24 295-68 459-190 716-764 1271-1501 1451-264 64 93 60-4843 59-3699-1-4507-4-4588-15z"/>
+  </g>
+</svg>

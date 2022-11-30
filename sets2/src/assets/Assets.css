@@ -1,13 +1,55 @@
 
-/* svg {
-
-} */
+svg {
+  width: 80%;
+  height: 100%;
+}
 
 rect {
   width: 1000;
   height: 1000;
 }
 
-/* rect.stripe {
-  fill:
-} */
+.hatched {
+  fill: purple;
+  stroke: purple;
+}
+
+.stripe {
+  fill: green;
+  stroke: green;
+}
+
+.dashed {
+  fill: red;
+  stroke: red;
+}
+
+.purple {
+  fill: purple;
+  stroke: purple;
+}
+
+.green {
+  fill: green;
+  stroke: green;
+}
+
+.red {
+  fill: red;
+  stroke: red;
+}
+
+.open {
+  fill: 'none';
+}
+
+.striped {
+  fill: url(#hatched-diagonal);
+}
+
+.svg {
+  stroke-width: 250;
+}
+
+
+

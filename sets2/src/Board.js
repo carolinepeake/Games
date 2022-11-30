@@ -10,9 +10,10 @@ export const Board = () => {
     <BoardContainer>
       {shuffledDeck.slice(0, 9).map((card, index) => {
         let key = card[0][0] + card[1][0] + card[2][0] + card[3];
+        let patternId = card[0][0] + card[2][0];
         return(
         <CardContainer key={key} index={index}>
-          <Card shading={card[0]} shape={card[1]} color={card[2]} count={card[3]} />
+          <Card shading={card[0]} shape={card[1]} color={card[2]} count={card[3]} patternId={patternId} index={index}/>
         </CardContainer>
         );
       })}
