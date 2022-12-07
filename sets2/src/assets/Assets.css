@@ -9,6 +9,14 @@ rect {
   height: 1000;
 }
 
+path.striped {
+  /* fill: url(#mask-stripe); */
+  /* fill: url(#pattern-stripe); */
+  /* mask: url(#pattern-stripe); */
+  mask: url(#mask-stripe);
+  fill-opacity: 1;
+}
+
 .hatched {
   fill: purple;
   stroke: purple;
@@ -27,29 +35,33 @@ rect {
 .purple {
   fill: purple;
   stroke: purple;
+  fill-opacity: 1;
 }
 
 .green {
   fill: green;
   stroke: green;
+  fill-opacity: 1;
 }
 
 .red {
   fill: red;
   stroke: red;
+  fill-opacity: 1;
 }
 
 .open {
   fill: 'none';
 }
 
-.striped {
-  fill: url(#hatched-diagonal);
-}
 
 .svg {
   stroke-width: 250;
 }
+/*
+.full {
+
+} */
 
 
 
