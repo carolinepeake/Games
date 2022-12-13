@@ -4,49 +4,44 @@ svg {
   height: 100%;
 }
 
-rect {
+/* rect {
   width: 1000;
   height: 1000;
-}
+} */
 
 path.striped {
   mask: url(#mask-stripe);
   fill-opacity: 1;
 }
 
-/* path.open {
-  mask: url(#mask-open);
-  fill-opacity: 1;
-} */
-
 .purple {
   fill: purple;
   stroke: purple;
-  fill-opacity: 1;
-  stroke-opacity: 1;
+  /* fill-opacity: 1;
+  stroke-opacity: 1; */
 }
 
 .green {
   fill: green;
   stroke: green;
-  fill-opacity: 1;
-  stroke-opacity: 1;
+  /* fill-opacity: 1;
+  stroke-opacity: 1; */
 }
 
 .red {
   fill: red;
   stroke: red;
-  fill-opacity: 1;
-  stroke-opacity: 1;
+  /* fill-opacity: 1;
+  stroke-opacity: 1; */
 }
 
 path.open {
   fill: none;
 }
 
-.svg {
+/* .svg {
   stroke-width: 250;
-}
+} */
 
 
 

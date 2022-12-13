@@ -3,7 +3,7 @@
 const createDeck = () => {
   let deck = [];
 
-  let shading = ['solid', 'striped', 'open'];
+  let shading = ['solid', 'banded', 'open'];
   let shape = ['oval', 'diamond', 'squiggle'];
   let color = ['green', 'purple', 'red'];
   let count = [1, 2, 3];
