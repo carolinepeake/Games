@@ -1,7 +1,7 @@
 import React from 'react';
 import '../Assets.css';
 // color = "currentColor",
-export const Oval = ({ color, shading}) => {
+export const Oval = ({ color, shading, shape }) => {
 
   return (
     <svg
@@ -30,6 +30,21 @@ export const Oval = ({ color, shading}) => {
             y2="0"
           />
         </pattern>
+        {/* <pattern
+          id='pattern-open'
+          width="8"
+          height="8"
+          patternUnits="userSpaceOnUse">
+          <line
+            // stroke="white"
+            // strokeWidth={1}
+            x1="0"
+            y1="0"
+            x2="8"
+            y2="0"
+            // fill="white"
+          />
+        </pattern> */}
         <mask
           id="mask-stripe"
         // could use maskContentUnit or mask-border to set border
@@ -39,32 +54,42 @@ export const Oval = ({ color, shading}) => {
         // (maybe had a 50% opacity white layer on top?)
         // and why adding a black-filled line and then commenting it out made the mask stripes vibrant again (full opacity)
         >
-          <path
-            d="M1,17 C1,-16 47,-16 47,17 V51 C47,84 1,84 1,51z"
+          <rect
+            // d="M1,17 C1,-16 47,-16 47,17 V51 C47,84 1,84 1,51z"
+            // d={shape}
+            x="-10"
+            y="-14"
+            width="60"
+            height="100"
             fill="url(#pattern-stripe)"
             maskContentUnits="objectBoundingBox"
             fillOpacity={1}
           />
         </mask>
+        {/* <mask
+          id="mask-open"
+        >
+          <path
+            d="M1,17 C1,-16 47,-16 47,17 V51 C47,84 1,84 1,51z"
+            fill="url(#pattern-open)"
+            maskContentUnits="objectBoundingBox"
+            fillOpacity={1}
+          />
+        </mask> */}
       </defs>
       <g
-        // className={color}
         stroke={color}
         strokeWidth={2}
       >
         <path
-          // color shading
           className={`${color} ${shading}`}
-          // className={`${color} striped`}
-          // stroke={color}
-          // strokeWidth={2}
           paintOrder="fill"
-          d="M3,15 C1,-16 47,-16 45,17 V49 C47,84 1,84 3,49z"
+          // d="M3,15 C1,-16 47,-16 45,17 V49 C47,84 1,84 3,49z"
+          d={shape}
         />
         <path
-          d="M3,15 C1,-16 47,-16 45,17 V49 C47,84 1,84 3,49z"
-          // stroke={color}
-          // strokeWidth={2}
+          // d="M3,15 C1,-16 47,-16 45,17 V49 C47,84 1,84 3,49z"
+          d={shape}
           fill="none"
         />
       </g>

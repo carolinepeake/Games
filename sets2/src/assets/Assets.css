@@ -14,10 +14,10 @@ path.striped {
   fill-opacity: 1;
 }
 
-path.open {
+/* path.open {
   mask: url(#mask-open);
   fill-opacity: 1;
-}
+} */
 
 .purple {
   fill: purple;
@@ -40,9 +40,9 @@ path.open {
   stroke-opacity: 1;
 }
 
-/* path.open {
-  fill: 'none';
-} */
+path.open {
+  fill: none;
+}
 
 .svg {
   stroke-width: 250;

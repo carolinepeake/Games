@@ -118,10 +118,10 @@ export const Card = ({ shading, shape, color, count, patternId, index }) => {
               <path d={pathData} />
             </g>
           </SymbolContainer> */}
-            {shape === 'diamond' && <Diamond color={color} shading={shading} i={index} stroke={color} fill={color} patternId={patternId}/>}
-            {shape === 'squiggle' && <Blob color={color} shading={shading} i={index} patternId={patternId}/>}
+            {shape === 'diamond' && <Diamond color={color} shading={shading} i={index} patternId={patternId} shape="M1,34 24,-5 47,34 24,73z" />}
+            {shape === 'squiggle' && <Blob color={color} shading={shading} i={index} patternId={patternId} shape="M30 0c-0.5 0.3 -2.7 2.5 -5 5 -4.7 5.4 -9.8 12 -13.6 17.8 C5.1 33 1.27 41.8 0.27 49c-0.16 1.5 -0.22 2.16 -0.22 3.72 0 1.5 0.05 2.16 0.22 3.38 C-1.44 61.5 2.5 65.7 7.8 68.3 13.38 70.94 20.7 71.7 27.6 71.16 c2.83 -0.5 5.38 -1.27 7.72 -2.38 1.44 -0.67 2.83 -1.55 3.94 -2.44 0.55 -0.44 1.77 -1.6 2.27 -2.22 3.44 -4 4.22 -9.5 2.16 -15.66 -1 -3 -2.6 -6.2 -8 -15.88 -0.83 -1.5 -1.88 -3.44 -2.33 -4.22 -4.38 -8 -6.38 -12.94 -7 -17.6 -0.11 -0.94 -0.11 -3.22 0 -4 0.27 -1.94 0.83 -3.44 1.77 -5 0.44 -0.72 0.44 -0.77 0.16 -0.61z"/>}
             {/* {shape === 'squiggle' && <Squiggle color={color} shading={shading} i={index} patternId={patternId}/>} */}
-            {shape === 'oval' && <Oval color={color} shading={shading} i={index} patternId={patternId}/>}
+            {shape === 'oval' && <Oval color={color} shading={shading} i={index} patternId={patternId} shape="M1,17 C1,-16 47,-16 47,17 V51 C47,84 1,84 1,51z"/>}
             {/* {shape === 'oval' && <Oval width="50" height="100"
             color={color}
             shading={shading}
