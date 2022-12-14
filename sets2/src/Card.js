@@ -66,7 +66,8 @@ export const Card = ({ shading, shape, color, count, index, cardID }) => {
 
 // must be a better way to do the active className -check links in travel blog
   return (
-    <StyledCard className={active ? 'active' : ''}
+    <StyledCard
+    className={active ? 'active' : ''}
     onClick={e => handleSelectCard(e)}
     >
       {[...Array(count).keys()].map((symbol, num) => {
@@ -82,8 +83,7 @@ export const Card = ({ shading, shape, color, count, index, cardID }) => {
 };
 
 const StyledCard = styled.div`
-  height: 100px;
-  width: 200px;
+
   border: 0.1em rgba(165, 165, 160, 0.44) solid;
   text-align: center;
   justify-content: center;
@@ -102,6 +102,8 @@ const StyledCard = styled.div`
     border: 0.1em rgba(55, 55, 51, 0.8) solid;
   }
 `;
+// height: 100px;
+  // width: 200px;
 // ${(props) => {
 //   props.active && css`
 //     cursor: pointer;
