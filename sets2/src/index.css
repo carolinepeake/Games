@@ -35,4 +35,8 @@ code {
 button {
   box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.79);
   border: 0.1em rgba(165, 165, 160, 0.44) solid;
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  border-radius: 5px;
 }

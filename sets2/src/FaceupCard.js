@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import styled from 'styled-components';
 import { Symbol } from './Symbol';
+import './Board.css';
 
-export const Card = ({ shading, shape, color, count, index, cardID }) => {
+export const FaceupCard = ({ shading, shape, color, count, index, cardID }) => {
 
   // props could be the three options
   // keep track of how many cards are selected
@@ -67,7 +68,7 @@ export const Card = ({ shading, shape, color, count, index, cardID }) => {
 // must be a better way to do the active className -check links in travel blog
   return (
     <StyledCard
-    className={active ? 'active' : ''}
+    className={`card ${active ? 'active' : ''}`}
     onClick={e => handleSelectCard(e)}
     >
       {[...Array(count).keys()].map((symbol, num) => {
@@ -87,14 +88,6 @@ export const Card = ({ shading, shape, color, count, index, cardID }) => {
 // :active (element is clicked on) should work as a selector, it does for a split second but then the styles don't stay
 // if can get active to work, can refactor cursor and transform properties to both be under &:hover, &:active {}
 const StyledCard = styled.div`
-  max-height: 15vh;
-  max-width: 20vw;
-  aspect-ratio: 7/4;
-  border: 0.1em rgba(165, 165, 160, 0.44) solid;
-  text-align: center;
-  justify-content: center;
-  border-radius: 5px;
-  box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.79);
   padding: calc(10px + 0.05vh) 0;
   display: flex;
   &:hover {

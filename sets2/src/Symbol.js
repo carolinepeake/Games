@@ -30,8 +30,8 @@ export const Symbol = ({ color, shading, shape }) => {
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       viewBox="0 0 48 68"
-      x="0"
-      y="0"
+      // x="0"
+      // y="0"
       width="80%"
       height="100%"
       stroke={color}

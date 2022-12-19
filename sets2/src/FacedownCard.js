@@ -1,11 +1,12 @@
 import React from 'react';
 import './index.css';
 import styled from 'styled-components';
+import './Board.css';
 
 export const FacedownCard = () => {
 
   return (
-    <CardBack>
+    <CardBack className="card">
       {/* <svg
         xmlns="http://www.w3.org/2000/svg"
         version="1.0"
@@ -81,18 +82,14 @@ export const FacedownCard = () => {
 const CardBack = styled.div`
 position: relative;
 z-index: 0;
-height: 100px;
-width: 200px;
-border: 0.1em rgba(165, 165, 160, 0.44) solid;
-text-align: center;
-justify-content: center;
-border-radius: 5px;
-box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.79);
 display: flex;
 flex-direction: column;
 align-items: center;
 background: radial-gradient(ellipse 100% 100% at top left, rgba(198,146,214,1) 0%, rgba(152,20,203,1) 35%, rgba(193,9,157,1) 100%);
 `;
+// height: 100px;
+// width: 200px;
+
 //background: radial-gradient(ellipse 100% 100% at top 25px left 50px, , rgba(198,146,214,1) 11%, rgba(152,20,203,1) 55%, rgba(193,9,157,1) 100%);
 //background: radial-gradient(top 25px left 50px, ellipse 100% 100%, rgba(198,146,214,1) 11%, rgba(152,20,203,1) 55%, rgba(193,9,157,1) 100%);
 //background: rgb(198,146,214);
@@ -102,10 +99,11 @@ background: radial-gradient(ellipse 100% 100% at top left, rgba(198,146,214,1) 0
 
 const Lines = styled.div`
   width: 100%;
-  height: 1.0em;
-  background-size: 1px 0.2em;
+  height: 20%;
+  background-size: 1px 4%;
   box-shadow: 0 0 1em rgba(var(--teal), 0.4);
   left: 0;
+  transform: translateY(-0.5em);
   position: absolute;
   z-index: 2;
   background: linear-gradient(rgba(89,193,254,0.2) 20%, rgba(89,193,254,1) 40%, rgba(89,193,254,1) 60%, rgba(89,193,254,0.2) 80%);
@@ -129,9 +127,8 @@ const Lines = styled.div`
 
 const Text = styled.h2`
   color: white;
-  top: 45px;
-  right: 58.5px;
-  font-size: 48;
+  right: 20%;
+  font-size: calc(16px + 0.1vh);
   stroke: blue;
   stroke-width: 1px;
   text-length: 45%;
@@ -140,4 +137,6 @@ const Text = styled.h2`
   position: absolute;
   z-index: 3;
   letter-spacing: -0.1em;
+  transform: translateY(-50%);
 `
+// transform: translateY(-25%);
