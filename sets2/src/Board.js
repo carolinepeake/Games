@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Card } from './Card';
 import { FacedownCard } from './FacedownCard';
+// don't think I need to memoize shuffledDeck, or persist it in state, but might want to test and see
 import { shuffledDeck } from './State/createGame';
 import styled from 'styled-components';
 
 export const Board = () => {
+
+  // can make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
+
 
   const [isStarted, setIsStarted] = useState(false);
   const handleStartGame = async (e) => {
