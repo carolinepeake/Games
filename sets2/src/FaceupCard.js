@@ -56,30 +56,29 @@ export const FaceupCard = ({ shading, shape, color, count, index, cardID }) => {
     }
   };
 
-
-
-
   // let pathData;
   // if (shape !== undefined) {
   //   pathData = getSVGPath(shape);
   // };
 
+  //the symbols are not properly responsive: they get uber tiny when screensize decreases
+
 
 // must be a better way to do the active className -check links in travel blog
   return (
-    <StyledCard
-    className={`card ${active ? 'active' : ''}`}
+    <CardFront
+    className={`card-face ${active ? 'active' : ''}`}
     onClick={e => handleSelectCard(e)}
     >
       {[...Array(count).keys()].map((symbol, num) => {
         let key = cardID + num;
         return (
           <SymbolContainer key={key}>
-            <Symbol color={color} shading={shading} shape={shape} key={key}/>
+            <Symbol color={color} shading={shading} shape={shape} id={key}/>
           </SymbolContainer>
         );
       })}
-    </StyledCard>
+    </CardFront>
   );
 };
 
@@ -87,9 +86,8 @@ export const FaceupCard = ({ shading, shape, color, count, index, cardID }) => {
 
 // :active (element is clicked on) should work as a selector, it does for a split second but then the styles don't stay
 // if can get active to work, can refactor cursor and transform properties to both be under &:hover, &:active {}
-const StyledCard = styled.div`
+const CardFront = styled.div`
   padding: calc(10px + 0.05vh) 0;
-  display: flex;
   &:hover {
     cursor: pointer;
     transform: scale(1.025);
@@ -101,9 +99,13 @@ const StyledCard = styled.div`
     border: 0.1em rgba(55, 55, 51, 0.8) solid;
   }
 `;
+// transform: rotateY(180deg);
+
 // height: 100px;
 // width: 200px;
 //padding: 1em 0;
+
+
 
 
 // ${(props) => {
