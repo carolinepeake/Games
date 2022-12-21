@@ -1,6 +1,14 @@
 :root {
   --teal: #59c1fe;
   --white: #ffffff;
+  --oldBtnColor: #524FD7;
+  --lightBtnColor: #C29A1D;
+  --darkBtnColor: #001EC2;
+  --pink: #B513C2; /*rgb(181,19,194) */
+  --yellow: #C29A1D; /* rgb(194,154,29) */
+  --purple: #5009C1; /* rgb(80,9,193) */
+  --green: #66C21D; /* rgb(102,194,29) */
+  --blue: #001EC2;  /* rgb(0,30,194) */
 }
 
 body {
@@ -23,7 +31,10 @@ code {
 
 .round-font {
   font-family: "Gluten", sans-serif;
+}
 
+.block-font {
+  font-family: "Exo 2", sans-serif;
 }
 
 .lines {
@@ -32,11 +43,20 @@ code {
   stroke: var(--teal);
 }
 
+/* reset default browser style for buttons */
 button {
-  box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.79);
-  border: 0.1em rgba(165, 165, 160, 0.44) solid;
-  cursor: pointer;
-  text-align: center;
-  justify-content: center;
-  border-radius: 5px;
+  font-family: inherit;
+  border: none;
+  background-color: transparent;
+  padding: 0;
+
+  @media screen and (-ms-high-contrast: active) {
+    border: 2px solid currentcolor;
+  }
+}
+
+h1 {
+  padding: 0;
+  margin: 0;
+  font-size: clamp(16px 4vh 32px);
 }
