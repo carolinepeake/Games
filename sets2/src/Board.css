@@ -1,3 +1,25 @@
+.board {
+  perspective: 600px;
+  animation: cardAppear 1.4s forwards;
+}
+
+/* @keyframes cardAppear {
+  0% {
+    transform: rotate3d(0,0,1,15deg) translate3d(0,-100vh,0);
+  }
+  30% {
+    transform: rotate3d(0,0,0,0deg) translate3d(0,0,0);
+  }
+  65% {
+    transform: rotate3d(0,0,0,0deg) translate3d(0,0,0) scale3d(1,1,1);
+  }
+  80% {
+    transform: rotate3d(0,0,1,-5deg) scale3d(1.05,1.05,1);
+  }
+} */
+
+/* didn't add card container w/ set deminsions and make width and height of .card 100% */
+
 .card {
   max-height: 15vh;
   max-width: 20vw;
@@ -7,4 +29,20 @@
   justify-content: center;
   border-radius: 5px;
   box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.79);
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(180deg);
+  width: 100%;
+  height: 100%;
 }
+
+.card-face {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  backface-visibility: hidden;
+}
+
