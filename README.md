@@ -6,6 +6,9 @@
 
 <image src="https://imgur.com/sWW4l4l.gif" alt="card flip demonstration" />
 
+![Set - Card Flip Animation](https://user-images.githubusercontent.com/100883305/208946779-76b0b1e9-71c0-4320-bb25-8307f401e847.gif)
+
+
 
 </div>
 
