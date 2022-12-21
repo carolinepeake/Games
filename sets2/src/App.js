@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Board } from './Board';
+import { Header } from './Header';
 import './App.css';
 
+
 function App() {
+
+  const [isStarted, setIsStarted] = useState(false);
+  const [flip, setFlip] = useState('');
+
   return (
     <div className="App">
-      <header className="App-header">Sets</header>
+      <Header isStarted={isStarted} setIsStarted={setIsStarted} setFlip={setFlip} flip={flip}/>
       <div className="App-main">
-        <Board/>
+        <Board isStarted={isStarted} flip={flip}/>
       </div>
     </div>
   );
