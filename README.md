@@ -12,6 +12,7 @@ A fast-paced card game of visual perception.  <a href="https://en.wikipedia.org/
 <image src="https://imgur.com/sWW4l4l.gif" alt="card flip animation demonstration" />
 </div>
 
+/**
 ## Built With
 <div align="start">
   * ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -31,6 +32,7 @@ A fast-paced card game of visual perception.  <a href="https://en.wikipedia.org/
   
   SVG
 </div>
+**/
 
 
 ## Getting Started 
