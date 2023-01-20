@@ -5,7 +5,9 @@ import './index.css';
 import './App.css';
 import { Button } from './StyledComponents';
 
-export const Header = ({ isStarted, setIsStarted, setFlip, flip }) => {
+export const Header = ({
+  // isStarted, setIsStarted,
+  setFlip, flip, gameStatus, setGameStatus }) => {
 
   // have floating deal button and then after facedown cards are dealt have floating start game button slide in from the top
   // have the button have a box-shadow and get bigger and smaller over a period of seconds to look as if it's floating
@@ -17,11 +19,48 @@ export const Header = ({ isStarted, setIsStarted, setFlip, flip }) => {
 
   // const [buttonText, setButtonText] = useState('Start Game')
 
-  const [gameOver, setGameOver] = useState(false);
+ // const [gameOver, setGameOver] = useState(false);
 
   const handleStartEndGame = (e) => {
-    isStarted && setGameOver(true);
-    setIsStarted(prev => !prev);
+    e.preventDefault();
+    if (gameStatus === 'idle' || gameStatus === 'ended') {
+      setGameStatus('started');
+      if (flip === '' || flip === undefined) {
+        setFlip('flip')
+      } else if (flip === 'flip') {
+        setFlip('unflip')
+      } else if (flip === 'unflip') {
+        setFlip('flip')
+      }
+    } else {
+      setGameStatus('ended');
+      if (flip === 'unflip') {
+        setFlip('flip')
+      }
+    }
+  };
+
+  //   if (gameStatus === 'started' && setGameStatus('ended');
+  //   // isStarted && setGameOver(true);
+  //   // setIsStarted(prev => !prev);
+  //   if (flip === '' || flip === undefined) {
+  //     setFlip('flip')
+  //   } else if (flip === 'flip') {
+  //     setFlip('unflip')
+  //   } else if (flip === 'unflip') {
+  //     setFlip('flip')
+  //   }
+
+  //   e.preventDefault();
+  // };
+
+  const LeftButtonText = gameStatus === 'ended' || gameStatus === 'idle' ? 'Start Game' : 'End Game';
+
+  // const [isPaused, setIsPaused] = useState(false);
+  const handlePauseGame = () => {
+    // setIsPaused(prev => !prev);
+    gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused')
+    // setGameStatus('paused');
     if (flip === '' || flip === undefined) {
       setFlip('flip')
     } else if (flip === 'flip') {
@@ -29,34 +68,22 @@ export const Header = ({ isStarted, setIsStarted, setFlip, flip }) => {
     } else if (flip === 'unflip') {
       setFlip('flip')
     }
-
-    e.preventDefault();
   };
 
-  let startEndButtonText;
-  isStarted ? startEndButtonText = 'End Game' : startEndButtonText = 'Start Game';
-
-  const [isPaused, setIsPaused] = useState(false);
-  const handlePauseGame = () => {
-    setIsPaused(prev => !prev);
-    if (flip === 'flip') {
-      setFlip('unflip')
-    } else if (flip === 'unflip') {
-      setFlip('flip')
-    }
-  };
-  let pauseButtonText;
-  isPaused ? pauseButtonText = 'Resume Game' : pauseButtonText = 'Pause Game';
+  const RightButtonText = gameStatus === 'paused' ? 'Resume Game' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause Game' : '';
 
   return (
     <header className="App-header">
       <HeaderLeft className="header-item">
-        <StyledButton className="button" $color="dark" type="button" onClick={e => handleStartEndGame(e)}>{startEndButtonText}</StyledButton>
+        <StyledButton className="button" $color="dark" type="button" onClick={e => handleStartEndGame(e)} style={{display: gameStatus === 'ended' ? 'none' : 'flex'}}>{LeftButtonText}</StyledButton>
       </HeaderLeft>
-      <h1 className="header-item">SET</h1>
+      <h1 className="header-item" style={{textAlign: 'center', justifyContent: 'center' }}>SET</h1>
       <HeaderRight className="header-item">
-        <StyledButton className="button" type="button" $color="light" onClick={e => handlePauseGame(e)} style={{display: isStarted ? 'flex' : 'none'}}>{pauseButtonText}</StyledButton>
-        <Timer isStarted={isStarted} isPaused={isPaused}/>
+        <StyledButton className="button" type="button" $color="light" onClick={e => handlePauseGame(e)} style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>{RightButtonText}</StyledButton>
+        <Timer
+        // isStarted={isStarted} isPaused={isPaused}
+        gameStatus={gameStatus}
+        />
       </HeaderRight>
     </header>
   );

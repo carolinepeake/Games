@@ -135,9 +135,8 @@ const Lines = styled.div`
 const Text = styled.h2`
   color: white;
   right: 20%;
-  font-size: calc(16px + 0.1vh);
-  stroke: blue;
-  stroke-width: 1px;
+  font-size: 1.75em;
+  -webkit-text-stroke: 1px blue;
   text-length: 45%;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -155,3 +154,5 @@ const Text = styled.h2`
 `
 //letter-spacing: -0.1em;
 // transform: translateY(-25%);
+
+//font-size: clamp(16px 6em 32px);

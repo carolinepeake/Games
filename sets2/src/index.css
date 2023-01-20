@@ -58,5 +58,9 @@ button {
 h1 {
   padding: 0;
   margin: 0;
+  font-size: clamp(18px 4vh 32px);
+}
+
+h2 {
   font-size: clamp(16px 4vh 32px);
 }

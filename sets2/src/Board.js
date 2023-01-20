@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaceupCard } from './FaceupCard';
 import { FacedownCard } from './FacedownCard';
 // don't think I need to memoize shuffledDeck, or persist it in state, but might want to test and see
-import { shuffledDeck } from './State/createGame';
+// import { shuffledDeck } from './State/createGame';
 import styled, { keyframes, css } from 'styled-components';
 import './index.css';
 
@@ -49,7 +49,15 @@ const cardUnflip = keyframes`
 
 // `;
 
-export const Board = ({ isStarted, flip }) => {
+export const Board = ({
+  // isStarted,
+  flip,
+  gameStatus,
+  deck,
+  setDeck,
+}) => {
+
+  // const [deck, setDeck] = useState(shuffledDeck);
 
   // can make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
 
@@ -73,37 +81,182 @@ export const Board = ({ isStarted, flip }) => {
   //   }
   // });
 
+    const [selectedCards, setSelectedCards] = useState([]);
+
+    const selectedCount = selectedCards.length;
+
+    const board = deck.slice(0, 12);
+
+    // function getSelectedCardIndex(selectedCard) {
+
+    // }
+
+    if (selectedCount === 3) {
+     const set = checkSelection();
+     console.log('viable set? : ', set);
+     if (set) {
+       console.log('vaiable set! ', selectedCards);
+       // show message correct set
+       // add cards to player who clicked hand's
+         // for now add them to single player's discard pile
+       // set out 3 new cards in spots left empty by selectedCards
+       deal3NewCards();
+       setSelectedCards([]);
+     } else {
+      // show message not a set
+      setSelectedCards([]);
+     }
+    };
+
+    //const selectedCardsE = ['bdr2', 'sog1', 'sdp3'];
+
+    // reduce()
+    // const viableSet = selectedCardsE.reduce(
+    //   (accumulator, currentValue) => {
+    //     return (currentValue &&
+    //   },
+    //   true
+    // );
+
+    // might be easier to keep as object and filter to unique values for each property and each has to be either 1 or 3 unique values
+    function checkSelection() {
+      // could use reduce() above
+      // let fill = [selectedCards[0][0], selectedCards[1][0], selectedCards[2][0]];
+      // let shape = [selectedCards[0][1], selectedCards[1][1], selectedCards[2][1]];
+      // let color = [selectedCards[0][2], selectedCards[1][2], selectedCards[2][2]];
+      // let count = [selectedCards[0][3], selectedCards[1][3], selectedCards[2][3]];
+
+      let fill = selectedCards.map(card => card.shading);
+      let shape = selectedCards.map(card => card.shape);
+      let color = selectedCards.map(card => card.color);
+      let count = selectedCards.map(card => card.count);
+
+      const distinctiveFill = [...new Set(fill)];
+      const distinctiveShape = [...new Set(shape)];
+      const distinctiveColor = [...new Set(color)];
+      const distinctiveCount = [...new Set(count)];
+
+      console.log('distinctiveFill: ', distinctiveFill, 'distinctiveShape: ', distinctiveShape, 'distinctiveColor :', distinctiveColor, 'distinctiveCount: ', distinctiveCount);
+
+      if (distinctiveFill.length === 2) {
+        return false;
+      }
+      if (distinctiveShape.length === 2) {
+        return false;
+      }
+      if (distinctiveColor.length === 2) {
+        return false;
+      }
+      if (distinctiveCount.length === 2) {
+        return false;
+      }
+
+      return true;
+    };
+
+    // new board is not rendering
+    function deal3NewCards() {
+      let oldDeck = deck.slice();
+      // let oldBoard = deck.slice(0, 12);
+      // let nextThreeCards = deck.slice(12, 15);
+      // console.log('next3Cards :', )
+      // let removedCards =  selectedCards.slice();
+      const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
+      console.log('empty spots: ', emptySpots);
+      // let fill = [selectedCards[0][0], selectedCards[1][0], selectedCards[2][0]];
+      // let shape = [selectedCards[0][1], selectedCards[1][1], selectedCards[2][1]];
+      // let color = [selectedCards[0][2], selectedCards[1][2], selectedCards[2][2]];
+      // let count = [selectedCards[0][3], selectedCards[1][3], selectedCards[2][3]];
+      // let newCardIndex = 12;
+
+      for (let i = 0; i < emptySpots.length; i++ ) {
+        oldDeck.splice(emptySpots[i], 1, oldDeck[12]);
+        oldDeck.splice(12, 1);
+        // newCardIndex++;
+      }
+      console.log('new deck : ', oldDeck);
+      setDeck(() => oldDeck);
+      // for (let i = 0; i <= 11; i++) {
+      //   for (let j = 0; j <= 2; j++) {
+      //     let oldCard = '' + oldBoard[i][0][0] + oldBoard[i][1][0] + oldBoard[i][2][0] + oldBoard[i][3][0];
+      //     if (oldCard === removedCards[j]) {
+      //       let nextCard = nextThreeCards.shift();
+      //       oldBoard.splice(i, 1, nextCard);
+      //       removedCards.splice(j, 1);
+      //     }
+      //   }
+      // }
+      // console.log('oldBoard :', oldBoard, 'board: ', board, 'nextThreeCards: ', nextThreeCards, 'removedCards :', removedCards, 'selectedCards :', selectedCards, 'deck: ', deck);
+      // let remainingCards = deck.slice(15);
+      // let newBoard = oldBoard.concat(remainingCards);
+      // console.log('new board: ', newBoard);
+      // setDeck(newBoard);
+    }
+
+    function handleSelect(e, card = {}, index) {
+      e.preventDefault();
+      console.log('e :', e);
+      // const cardIndex = e.currentTarget.index;
+      // const card = e.currentTargert.card;
+      card.index = index;
+      if (selectedCards.length === 0) {
+        // start timer
+      }
+      // if (selectedCards.includes(card)) {
+      //   // should eithet toggle deselect or show message already selected
+      //   return;
+      // }
+      // // would be better practice to do based off of unique id not index, but can fix later
+      if (selectedCards.map(selectedCard => selectedCard.id).includes(card.id)) {
+        return;
+      }
+      setSelectedCards([
+        ...selectedCards,
+        card,
+      ]);
+
+    };
+
+
   return (
       <StyledBoard>
-        {/* {!isStarted
-        ?  */}
-        {/* [...Array(12).keys()].map((card, index) => {
-          return (
-            <FacedownCard key={index} flip={flip}/>
-          )
-        })
-        :  */}
-        {shuffledDeck.slice(0, 12).map((card, index) => {
-          let key = card[0][0] + card[1][0] + card[2][0] + card[3];
+        {deck.slice(0, 12).map((card, index) => {
+          //let key = card[0][0] + card[1][0] + card[2][0] + card[3];
+          console.log()
           return(
-            <StyledFlip className="card" key={key} flip={flip}>
-              <FacedownCard index={index} cardID={key} />
-              <FaceupCard shading={card[0]} shape={card[1]} color={card[2]} count={card[3]} index={index} cardID={key}/>
+            <StyledFlip className="card" key={card.id} flip={flip}>
+              <FacedownCard index={index}
+              // cardID={key}
+              />
+              <FaceupCard
+              // shading={card[0]}
+              // shape={card[1]}
+              // color={card[2]}
+              // count={card[3]}
+                // card={card}
+                id={card.id}
+                index={index}
+                card={card}
+                //cardID={key}
+                isSelected={
+                  selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
+                }
+                onSelect={handleSelect}
+              />
             </StyledFlip>
           );
-        })};
-        {/* } */}
+        })}
       </StyledBoard>
   );
 };
 
 // make cardAppear animation like shuffling (each card slides and then snaps into place 1 by 1)
 const StyledBoard = styled.div`
-  height: 70vh;
-  width: 70vw;
+  height: 80vh;
+  width: 80vw;
   display: grid;
-  grid-template-rows: repeat(4, 1fr);
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2em;
   left-margin: 10%;
   perspective: 600px;
