@@ -6,7 +6,6 @@ import './App.css';
 import { Button } from './StyledComponents';
 
 export const Header = ({
-  // isStarted, setIsStarted,
   setFlip, flip, gameStatus, setGameStatus }) => {
 
   // have floating deal button and then after facedown cards are dealt have floating start game button slide in from the top
@@ -25,18 +24,18 @@ export const Header = ({
     e.preventDefault();
     if (gameStatus === 'idle' || gameStatus === 'ended') {
       setGameStatus('started');
-      if (flip === '' || flip === undefined) {
-        setFlip('flip')
-      } else if (flip === 'flip') {
-        setFlip('unflip')
-      } else if (flip === 'unflip') {
-        setFlip('flip')
-      }
+      // if (flip === '' || flip === undefined) {
+      //   setFlip('flip')
+      // } else if (flip === 'flip') {
+      //   setFlip('unflip')
+      // } else if (flip === 'unflip') {
+      //   setFlip('flip')
+      // }
     } else {
       setGameStatus('ended');
-      if (flip === 'unflip') {
-        setFlip('flip')
-      }
+      // if (flip === 'unflip') {
+      //   setFlip('flip')
+      // }
     }
   };
 
@@ -58,16 +57,14 @@ export const Header = ({
 
   // const [isPaused, setIsPaused] = useState(false);
   const handlePauseGame = () => {
-    // setIsPaused(prev => !prev);
-    gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused')
-    // setGameStatus('paused');
-    if (flip === '' || flip === undefined) {
-      setFlip('flip')
-    } else if (flip === 'flip') {
-      setFlip('unflip')
-    } else if (flip === 'unflip') {
-      setFlip('flip')
-    }
+    gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
+    // if (flip === '' || flip === undefined) {
+    //   setFlip('flip')
+    // } else if (flip === 'flip') {
+    //   setFlip('unflip')
+    // } else if (flip === 'unflip') {
+    //   setFlip('flip')
+    // }
   };
 
   const RightButtonText = gameStatus === 'paused' ? 'Resume Game' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause Game' : '';

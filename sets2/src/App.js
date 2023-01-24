@@ -4,7 +4,7 @@ import { Board } from './Board';
 import { Header } from './Header';
 import './App.css';
 import './index.css';
-import { createDeck, shuffleDeck } from './State/createGame';
+import { unshuffledDeck, shuffleDeck } from './State/createGame';
 import { Button } from './StyledComponents';
 
 
@@ -14,14 +14,13 @@ function App() {
     initGame();
   }, []);
 
-  // let deck;
   const [deck, setDeck] = useState([]);
 
   const initGame = () => {
     // setGameStatus('started');
     // return shuffled deck
   //  deck = shuffleDeck(createDeck());
-    setDeck(shuffleDeck(createDeck()));
+    setDeck(shuffleDeck(unshuffledDeck));
   };
 
   const restartGame = (e) => {
@@ -29,7 +28,6 @@ function App() {
     initGame();
     setGameStatus('idle');
     setFlip('');
-    setGameStatus('idle');
   };
 
   const [gameStatus, setGameStatus] = useState('idle');

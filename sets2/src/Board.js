@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { FaceupCard } from './FaceupCard';
 import { FacedownCard } from './FacedownCard';
 // don't think I need to memoize shuffledDeck, or persist it in state, but might want to test and see
@@ -45,12 +45,7 @@ const cardUnflip = keyframes`
   }
 `;
 
-// const CardAppear = styled.div`
-
-// `;
-
 export const Board = ({
-  // isStarted,
   flip,
   gameStatus,
   deck,
@@ -85,7 +80,7 @@ export const Board = ({
 
     const selectedCount = selectedCards.length;
 
-    const board = deck.slice(0, 12);
+   // const board = deck.slice(0, 12);
 
     // function getSelectedCardIndex(selectedCard) {
 
@@ -221,23 +216,14 @@ export const Board = ({
   return (
       <StyledBoard>
         {deck.slice(0, 12).map((card, index) => {
-          //let key = card[0][0] + card[1][0] + card[2][0] + card[3];
           console.log()
           return(
-            <StyledFlip className="card" key={card.id} flip={flip}>
-              <FacedownCard index={index}
-              // cardID={key}
-              />
+            <StyledFlip className="card" key={card.id} flip={flip} gameStatus={gameStatus}>
+              <FacedownCard />
               <FaceupCard
-              // shading={card[0]}
-              // shape={card[1]}
-              // color={card[2]}
-              // count={card[3]}
-                // card={card}
                 id={card.id}
                 index={index}
                 card={card}
-                //cardID={key}
                 isSelected={
                   selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
                 }
@@ -250,7 +236,7 @@ export const Board = ({
   );
 };
 
-// make cardAppear animation like shuffling (each card slides and then snaps into place 1 by 1)
+// TO-DO: make cardAppear animation like shuffling (each card slides and then snaps into place 1 by 1)
 const StyledBoard = styled.div`
   height: 80vh;
   width: 80vw;
@@ -262,13 +248,28 @@ const StyledBoard = styled.div`
   perspective: 600px;
   animation: ${cardAppear} 1.4s forwards;
 `;
+
 // can just interpolate
-const animation = props =>
-  props.flip === 'flip' ?
+// const animation = props =>
+//   props.flip === 'flip' ?
+//     css`
+//       ${cardFlip} .275s forwards linear;
+//     `
+//   : props.flip === 'unflip' ?
+//     css`
+//         ${cardUnflip} .275s forwards linear;
+//       `
+//   : css`
+//         none;
+//       `
+//   ;
+
+  const animation = props =>
+  props.gameStatus === 'started' || props.gameStatus === 'resumed' ?
     css`
       ${cardFlip} .275s forwards linear;
     `
-  : props.flip === 'unflip' ?
+  : props.gameStatus === 'paused' ?
     css`
         ${cardUnflip} .275s forwards linear;
       `
@@ -279,7 +280,6 @@ const animation = props =>
 
 const StyledFlip = styled.div`
   animation: ${animation};
-
 `
 
 // animation: ${props => props.flip === 'flip' ? `${cardFlip} .275s forwards linear` : props.flip === 'unflip' ? `${cardUnflip} .275s forwards linear` : ''};
