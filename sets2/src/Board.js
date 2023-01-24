@@ -46,7 +46,6 @@ const cardUnflip = keyframes`
 `;
 
 export const Board = ({
-  flip,
   gameStatus,
   deck,
   setDeck,
@@ -58,23 +57,6 @@ export const Board = ({
 
   // could make styled card a separate component and then import it for faceup card and facedown card and extend the Card style using styled components
 
-
-  // const [unflip, setUnflip] = useState('');
-  // useEffect(() => {
-
-  // }, [isStarted])
-  // card.addEventListener('click', function(e){
-  //   e.stopPropagation();
-  //   if(card.classList.contains('card--flipped')) {
-  //     card.classList.add('card--unflip');
-  //     setTimeout(function(){
-  //       card.classList.remove('card--flipped', 'card--unflip');
-  //     }, 500);
-  //   }
-  //   else {
-  //     card.classList.add("card--flipped");
-  //   }
-  // });
 
     const [selectedCards, setSelectedCards] = useState([]);
 
@@ -218,7 +200,8 @@ export const Board = ({
         {deck.slice(0, 12).map((card, index) => {
           console.log()
           return(
-            <StyledFlip className="card" key={card.id} flip={flip} gameStatus={gameStatus}>
+            <StyledFlip className="card" key={card.id}
+            gameStatus={gameStatus}>
               <FacedownCard />
               <FaceupCard
                 id={card.id}
@@ -249,21 +232,6 @@ const StyledBoard = styled.div`
   animation: ${cardAppear} 1.4s forwards;
 `;
 
-// can just interpolate
-// const animation = props =>
-//   props.flip === 'flip' ?
-//     css`
-//       ${cardFlip} .275s forwards linear;
-//     `
-//   : props.flip === 'unflip' ?
-//     css`
-//         ${cardUnflip} .275s forwards linear;
-//       `
-//   : css`
-//         none;
-//       `
-//   ;
-
   const animation = props =>
   props.gameStatus === 'started' || props.gameStatus === 'resumed' ?
     css`
@@ -281,5 +249,3 @@ const StyledBoard = styled.div`
 const StyledFlip = styled.div`
   animation: ${animation};
 `
-
-// animation: ${props => props.flip === 'flip' ? `${cardFlip} .275s forwards linear` : props.flip === 'unflip' ? `${cardUnflip} .275s forwards linear` : ''};

@@ -27,20 +27,16 @@ function App() {
     e.preventDefault();
     initGame();
     setGameStatus('idle');
-    setFlip('');
   };
 
   const [gameStatus, setGameStatus] = useState('idle');
 
-  // const [isStarted, setIsStarted] = useState(false);
-  const [flip, setFlip] = useState('');
   // const [deck, setDeck] = useState(shuffledDeck);
 
   return (
     <div className="App">
       <Header
-      // isStarted={isStarted} setIsStarted={setIsStarted}
-      setFlip={setFlip} flip={flip} setGameStatus={setGameStatus} gameStatus={gameStatus}/>
+       setGameStatus={setGameStatus} gameStatus={gameStatus}/>
       <div className="App-main">
         {gameStatus === 'ended'
         ? (<div>
@@ -51,9 +47,7 @@ function App() {
             </StyledButton>
           </div>)
         : <Board
-        // isStarted={isStarted}
         gameStatus={gameStatus}
-        flip={flip}
         deck={deck}
         setDeck={setDeck}
         />}
