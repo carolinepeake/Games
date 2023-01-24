@@ -1,7 +1,6 @@
 import React from 'react';
-import './index.css';
 import styled from 'styled-components';
-import './Board.css';
+import './Card.css';
 
 export const FacedownCard = () => {
   return (
@@ -152,6 +151,7 @@ const Text = styled.h2`
     9px 7px 1px #4af7ff;
 
 `
+
 //letter-spacing: -0.1em;
 // transform: translateY(-25%);
 

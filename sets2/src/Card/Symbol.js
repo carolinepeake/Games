@@ -1,6 +1,12 @@
 import React, {useState, useEffect} from 'react';
 
-export const Symbol = ({ color, shading, shape }) => {
+type SymbolProps = {
+  shading: string;
+  shape: string;
+  color: string;
+};
+
+export const Symbol = ({ color, shading, shape }: SymbolProps) => {
 
   const [path, setPath] = useState('');
 
@@ -30,8 +36,9 @@ export const Symbol = ({ color, shading, shape }) => {
       xmlns="http://www.w3.org/2000/svg"
       version="1.0"
       viewBox="0 0 48 68"
-      // x="0"
-      // y="0"
+      // default
+      x="0"
+      y="0"
       width="80%"
       height="100%"
       stroke={color}

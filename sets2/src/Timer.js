@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-export const Timer = ({ gameStatus }) => {
+type TimerProps = {
+  gameStatus: 'idle' | 'started' | 'paused' | 'resumed' | 'ended';
+};
+
+export const Timer = ({ gameStatus }: TimerProps) => {
 
   const [elapsedSecs, setElapsedSecs] = useState(0);
 
@@ -14,7 +18,7 @@ export const Timer = ({ gameStatus }) => {
       setElapsedSecs(0)
     }
     return () => clearInterval(interval);
-  }, [gameStatus])
+  }, [gameStatus]);
 
   let timerText = Math.floor(elapsedSecs / 60) + ':' + ('0' + (elapsedSecs % 60)).slice(-2);
   if (elapsedSecs >= 3600) {
