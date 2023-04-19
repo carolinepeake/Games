@@ -10,7 +10,7 @@
   
 # Games
 
-A javascript library of your online single and multi player versions of your favorite games!
+A javascript application with which you may play your favorite single and multi player games!
 
 <br/>
 <br/>
