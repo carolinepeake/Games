@@ -5,6 +5,8 @@ import './index.css';
 import { FaceupCard } from './Card/FaceupCard';
 import { FacedownCard } from './Card/FacedownCard';
 import { Modal} from './Modal.tsx';
+import NavPanel from './NavPanel.js';
+import Scoreboard from './Scoreboard.js';
 
 type BoardProps = {
   gameStatus: 'idle' | 'started' | 'paused' | 'resumed' | 'ended';
@@ -108,6 +110,8 @@ export const Board = ({ gameStatus }: BoardProps) => {
    : null;
 
   return (
+    <>
+    {/* <NavPanel /> */}
     <StyledBoard>
       {deck.slice(0, 12).map((card, index) => {
         console.log()
@@ -131,6 +135,8 @@ export const Board = ({ gameStatus }: BoardProps) => {
       {modal}
 
     </StyledBoard>
+    <Scoreboard />
+    </>
   );
 };
 
@@ -191,11 +197,11 @@ const animation = props =>
 const StyledBoard = styled.div`
   height: 80vh;
   width: 80vw;
+  margin: 0 auto;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   grid-template-columns: repeat(4, 1fr);
   gap: 2em;
-  left-margin: 10%;
   perspective: 600px;
   animation: ${cardAppear} 1.4s forwards;
 `;

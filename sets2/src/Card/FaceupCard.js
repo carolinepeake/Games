@@ -51,6 +51,7 @@ export const FaceupCard = ({
 // if can get active to work, can refactor cursor and transform properties to both be under &:hover, &:active {}
 const CardFront = styled.div`
   padding: calc(10px + 0.05vh) 0;
+  border-radius: inherit;
   &:hover {
     cursor: pointer;
     transform: scale(1.025);

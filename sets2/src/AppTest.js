@@ -10,13 +10,28 @@ const App = () => {
 
   const [gameStatus, setGameStatus] = useState('idle');
 
+  // const handleStartEndGame = () => {
+  //   if (gameStatus === 'idle' || gameStatus === 'ended') {
+  //     setGameStatus('started');
+  //   } else {
+  //     setGameStatus('ended');
+  //   }
+  // };
+
+  const handlePauseGame = () => {
+    gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
+  };
+
   const restartGame = () => {
     setGameStatus('idle');
   };
 
+
   return (
     <div className="App">
       <Header
+        handlePauseGame={handlePauseGame}
+        // handleStartEndGame={handleStartEndGame}
         setGameStatus={setGameStatus}
         gameStatus={gameStatus}
       />
