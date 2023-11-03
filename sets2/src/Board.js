@@ -31,7 +31,18 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
 
   const [p2Score, setP2Score] = useState(0);
 
+  const [disabled, setDisabled] = useState(false);
+
+  const handleClickSet = () => {
+    // start 10 sec countdown
+    // allow cards to be clicked on
+    setDisabled(true);
+  };
+
   const handleSelectCard = (card, index) => {
+    if (disabled === false) {
+      return;
+    }
     let timeout;
     if (selectedCards.length === 0) {
       // TO-DO: start timer
@@ -160,6 +171,7 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
             selection = [card1, card2, card3];
             let isSet = checkSelection(selection);
             if (isSet) {
+              setDisabled(true);
               setSelectedCards(selection);
               return;
               // return selection;
@@ -217,7 +229,7 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
       {modal}
 
     </StyledBoard>
-    <Scoreboard gameStatus={gameStatus} setGameStatus={setGameStatus} p1Score={p1Score} p2Score={p2Score}/>
+    <Scoreboard gameStatus={gameStatus} setGameStatus={setGameStatus} p1Score={p1Score} p2Score={p2Score} disabled={disabled}/>
     </>
   );
 };

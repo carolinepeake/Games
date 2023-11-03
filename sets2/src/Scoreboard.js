@@ -8,21 +8,17 @@ type ScoreboardProps = {
   setGameStatus: React.Dispatch<React.SetStateAction<string>>;
   // p1Score:
   // p2Score:
+  // disabled:
+  // handleClickSet:
 };
 
-export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score}: ScoreboardProps) {
+export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score, disabled, handleClickSet}: ScoreboardProps) {
 
   const handlePauseGame = () => {
     gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
   };
 
   const RightButtonText = gameStatus === 'paused' ? 'Resume' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause' : '';
-
-  const handleClickSet = () => {
-    // start 10 sec countdown
-    // allow cards to be clicked on
-
-  };
 
   return (
     <Container style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>
@@ -37,7 +33,7 @@ export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score
         </Score>
       </Item>
 
-      <SetButton onClick={handleClickSet}>
+      <SetButton onClick={handleClickSet} $disabled={disabled}>
         SET
       </SetButton>
 
@@ -92,6 +88,7 @@ const SetButton = styled(Button)`
   background-color: var(--darkBtnColor);
   font-size: 2rem;
   color: white;
+  ${props => props.$disabled && 'background-color: rgba(22,91,251,0.5)'};
 `;
 
 const PauseContainer = styled.div`
