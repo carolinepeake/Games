@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Timer } from './Timer';
 import styled, { css } from 'styled-components';
 import './index.css';
@@ -34,16 +34,34 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
 
     const RightButtonText = gameStatus === 'paused' ? 'Resume Game' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause Game' : '';
 
-
+  const [expand, setExpand] = useState(false);
 
   return (
     <header className="App-header">
       <h1 className="header-logo">SET</h1>
       <div className="header-links">
         <a className="header-link" href="https://www.wikihow.com/Play-SET" target="_blank" rel="noreferrer">tutorial</a>
-        <span className="header-link">games</span>
+        {/* <span className="header-link">games</span> */}
+        <div className="header-link header-dropdown" onMouseEnter={() => setExpand(true)} onMouseLeave={() => setExpand(false)}>
+          <span>
+            difficulty &#9662;
+          </span>
+          {expand &&
+            <Dropdown>
+            <div>
+              Easy
+            </div>
+            <div>
+              Medium
+            </div>
+            <div>
+              Hard
+            </div>
+          </Dropdown>}
+        </div>
+
         <span
-          className="header-link"
+          className="header-link header-button"
           onClick={handleStartEndGame}
           style={{display: gameStatus === 'ended' ? 'none' : 'flex'}}
         >
@@ -108,6 +126,12 @@ const StyledButton = styled(Button)`
         `
     };
   }}
+`;
+
+const Dropdown = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
 `;
 
 
