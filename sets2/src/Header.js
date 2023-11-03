@@ -28,7 +28,9 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
       gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
     };
 
-    const LeftButtonText = gameStatus === 'ended' || gameStatus === 'idle' ? 'Start Game' : 'End Game';
+    // const LeftButtonText = gameStatus === 'ended' || gameStatus === 'idle' ? 'Start Game' : 'End Game';
+
+    const LeftButtonText = gameStatus === 'ended' || gameStatus === 'idle' ? 'start' : 'quit';
 
     const RightButtonText = gameStatus === 'paused' ? 'Resume Game' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause Game' : '';
 
@@ -36,7 +38,20 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
 
   return (
     <header className="App-header">
-      <HeaderLeft className="header-item">
+      <h1 className="header-logo">SET</h1>
+      <div className="header-links">
+        <a className="header-link" href="https://www.wikihow.com/Play-SET" target="_blank" rel="noreferrer">tutorial</a>
+        <span className="header-link">games</span>
+        <span
+          className="header-link"
+          onClick={handleStartEndGame}
+          style={{display: gameStatus === 'ended' ? 'none' : 'flex'}}
+        >
+          {/* exit */}
+          {LeftButtonText}
+        </span>
+      </div>
+      {/* <HeaderLeft className="header-item">
         <StyledButton
         $color="dark"
         onClick={handleStartEndGame}
@@ -45,28 +60,25 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
           {LeftButtonText}
         </StyledButton>
       </HeaderLeft>
-      <h1 className="header-item" style={{textAlign: 'center', justifyContent: 'center' }}>SET</h1>
+
       <HeaderRight className="header-item">
         <StyledButton $color="light" onClick={handlePauseGame} style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>{RightButtonText}</StyledButton>
         <Timer
         gameStatus={gameStatus}
         />
-      </HeaderRight>
+      </HeaderRight> */}
     </header>
   );
 };
 
-const HeaderRight = styled.div`
-  justify-content: space-around;
-  align-contents: flex-end;
-`;
+
+
 const HeaderLeft = styled.div`
   justify-content: left;
   margin-left: 2%;
 `;
 
 const StyledButton = styled(Button)`
-  margin-bottom: 2%;
   ${(props) => {
     switch (props.$color) {
       case "dark":
