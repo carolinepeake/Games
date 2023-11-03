@@ -10,9 +10,10 @@ import Scoreboard from './Scoreboard.js';
 
 type BoardProps = {
   gameStatus: 'idle' | 'started' | 'paused' | 'resumed' | 'ended';
+  setGameStatus: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export const Board = ({ gameStatus }: BoardProps) => {
+export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
 
   const [deck, setDeck] = useState([]);
 
@@ -25,6 +26,10 @@ export const Board = ({ gameStatus }: BoardProps) => {
   const [selectedCards, setSelectedCards] = useState([]);
 
   const [modalText, setModalText] = useState('');
+
+  const [p1Score, setP1Score] = useState(0);
+
+  const [p2Score, setP2Score] = useState(0);
 
   const handleSelectCard = (card, index) => {
     let timeout;
@@ -78,6 +83,9 @@ export const Board = ({ gameStatus }: BoardProps) => {
 
     if (selectedCards.length === 3) {
       const set = checkSelection();
+      if (set) {
+        setP1Score(prev => prev + 1);
+      }
       const modalText = set ? 'You found a set!' : 'Not a set!';
       setModalText(modalText);
       timeout = setTimeout(() => {
@@ -104,6 +112,81 @@ export const Board = ({ gameStatus }: BoardProps) => {
 
   }, [selectedCards]);
 
+  useEffect(() => {
+    function runBot() {
+
+      function checkSelection(selectedCards) {
+        let fill = selectedCards.map(card => card.shading);
+        let shape = selectedCards.map(card => card.shape);
+        let color = selectedCards.map(card => card.color);
+        let count = selectedCards.map(card => card.count);
+
+        const distinctiveFill = [...new Set(fill)];
+        const distinctiveShape = [...new Set(shape)];
+        const distinctiveColor = [...new Set(color)];
+        const distinctiveCount = [...new Set(count)];
+
+        if (distinctiveFill.length === 2) {
+          return false;
+        }
+        if (distinctiveShape.length === 2) {
+          return false;
+        }
+        if (distinctiveColor.length === 2) {
+          return false;
+        }
+        if (distinctiveCount.length === 2) {
+          return false;
+        }
+
+        return true;
+      };
+
+      let selection;
+
+      let startIndex = 0; // let startIndex = Math.floor(Math.random() * 12);
+      let secondCard = startIndex + 1;
+      let thirdCard = startIndex + 2;
+
+      while (startIndex <= 9) {
+        while (secondCard <= 10) {
+          while (thirdCard <= 11) {
+            let card1 = deck[startIndex];
+            card1.index = startIndex;
+            let card2 = deck[secondCard];
+            card2.index = secondCard;
+            let card3 = deck[thirdCard];
+            card3.index = thirdCard;
+            selection = [card1, card2, card3];
+            let isSet = checkSelection(selection);
+            if (isSet) {
+              setSelectedCards(selection);
+              return;
+              // return selection;
+            }
+            thirdCard++;
+          }
+          secondCard++;
+          thirdCard = secondCard + 1;
+        }
+        startIndex ++;
+        secondCard = startIndex + 1;
+        thirdCard = secondCard + 1;
+      }
+
+      return;
+      // return false;
+    };
+
+    let timeout;
+
+    if (gameStatus === 'started') {
+      timeout = setTimeout(() => runBot(), 3000);
+    }
+    return () => clearTimeout(timeout);
+
+  }, [gameStatus, deck]);
+
   const modal =
   modalText.length > 0 ?
    <Modal text={modalText} setText={setModalText}/>
@@ -111,7 +194,6 @@ export const Board = ({ gameStatus }: BoardProps) => {
 
   return (
     <>
-    {/* <NavPanel /> */}
     <StyledBoard>
       {deck.slice(0, 12).map((card, index) => {
         console.log()
@@ -135,7 +217,7 @@ export const Board = ({ gameStatus }: BoardProps) => {
       {modal}
 
     </StyledBoard>
-    <Scoreboard />
+    <Scoreboard gameStatus={gameStatus} setGameStatus={setGameStatus} p1Score={p1Score} p2Score={p2Score}/>
     </>
   );
 };
@@ -195,7 +277,7 @@ const animation = props =>
 
 // TO-DO: make cardAppear animation like shuffling (each card slides and then snaps into place 1 by 1)
 const StyledBoard = styled.div`
-  height: 80vh;
+ /* height: 80vh; */
   width: 80vw;
   margin: 0 auto;
   display: grid;
@@ -204,6 +286,7 @@ const StyledBoard = styled.div`
   gap: 2em;
   perspective: 600px;
   animation: ${cardAppear} 1.4s forwards;
+  background-color: #66 4af7ff;
 `;
 
 const StyledFlip = styled.div`
