@@ -1,36 +1,37 @@
 import React from "react";
 import styled from 'styled-components';
 import './index.css';
-import AddCardsBtn from './AddCardsBtn.js';
-import Difficulty from './Difficulty';
-
+import { Timer } from './Timer';
+import PauseBtn from './PauseBtn';
 
  type TopControlsProps = {
   // deck:
-  // setExtraCards: React.Dispatch<React.SetStateAction<array>>;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+  gameStatus: 'idle' | 'started' | 'paused' | 'resumed' | 'ended';
+  setGameStatus: React.Dispatch<React.SetStateAction<string>>;
 };
-
 
 export default function TopControls({
   deck,
-  setExtraCards,
-  difficulty,
-  setDifficulty,
-}: TopControlsProps) {
+  gameStatus,
+  setGameStatus,
 
+}: TopControlsProps) {
 
   return (
     <StyledTopControls>
       <CardsRemaining>
         {`Cards Remaining: ${deck.length}`}
       </CardsRemaining>
-      <AddCardsBtn deck={deck} setExtraCards={setExtraCards}/>
-      <Difficulty
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
-      />
+
+      <PauseContainer>
+        <Timer
+          gameStatus={gameStatus}
+        />
+        <PauseBtn
+          gameStatus={gameStatus}
+          setGameStatus={setGameStatus}
+        />
+      </PauseContainer>
     </StyledTopControls>
     )
   };
@@ -42,8 +43,17 @@ export default function TopControls({
   gap: 2rem;
   width: 80vw;
   margin-bottom: 2.5vh;
+  justify-content: space-between;
 `;
 
 const CardsRemaining = styled.div`
   color: grey;
+`;
+
+const PauseContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
 `;
