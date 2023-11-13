@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes, css } from 'styled-components';
 import { unshuffledDeck, shuffleDeck } from './State/createGame';
 import './index.css';
-import { Modal} from './Modal.tsx';
+import Modal from './Modal.tsx';
 import { Button } from './StyledComponents.js';
 import Scoreboard from './Scoreboard.js';
-import AddCardsBtn from './AddCardsBtn.js';
-import Difficulty from './Difficulty';
 import Card from './Card/Card.js';
+import TopControls from './TopControls';
 
 // TODO: subtract 1 point if incorrect set
 // TO-DO: make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
@@ -321,16 +320,12 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
 
   return (
     <>
-    <TopControls>
-      <CardsRemaining>
-        {`Cards Remaining: ${deck.length}`}
-      </CardsRemaining>
-      <AddCardsBtn deck={deck} setExtraCards={setExtraCards}/>
-      <Difficulty
-        difficulty={difficulty}
-        setDifficulty={setDifficulty}
-      />
-    </TopControls>
+    <TopControls
+      deck={deck}
+      setExtraCards
+      difficulty={difficulty}
+      setDifficulty={setDifficulty}
+    />
 
     {deck.length > 0
     && (
@@ -401,18 +396,7 @@ const StyledBoard = styled.div`
   background-color: #66 4af7ff;
 `;
 
-const TopControls = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2rem;
-  width: 80vw;
-  margin-bottom: 2.5vh;
-`;
 
-const CardsRemaining = styled.div`
-  color: grey;
-`;
 
 const BottomControls = styled.div`
   display: grid;
