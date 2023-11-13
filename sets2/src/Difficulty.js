@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import './index.css';
 import './App.css';
 
-export default function StyledSelect({ difficulty, setDifficulty}) {
+type DifficultyProps = {
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+};
+
+export default function Difficulty({ difficulty, setDifficulty}: DifficultyProps) {
   const [dropdownOpened, setDropdownOpened] = useState(false);
 
   function handleClick(option) {

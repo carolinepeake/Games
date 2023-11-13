@@ -6,7 +6,7 @@ import { Modal} from './Modal.tsx';
 import { Button } from './StyledComponents.js';
 import Scoreboard from './Scoreboard.js';
 import AddCardsBtn from './AddCardsBtn.js';
-import StyledSelect from './Difficulty';
+import Difficulty from './Difficulty';
 import Card from './Card/Card.js';
 
 // TODO: subtract 1 point if incorrect set
@@ -326,7 +326,7 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
         {`Cards Remaining: ${deck.length}`}
       </CardsRemaining>
       <AddCardsBtn deck={deck} setExtraCards={setExtraCards}/>
-      <StyledSelect
+      <Difficulty
         difficulty={difficulty}
         setDifficulty={setDifficulty}
       />
