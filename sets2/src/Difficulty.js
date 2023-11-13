@@ -32,7 +32,8 @@ export default function Difficulty({ difficulty, setDifficulty}: DifficultyProps
       onMouseEnter={() => setDropdownOpened(true)}
       onMouseLeave={() => setDropdownOpened(false)}
     >
-      Difficulty &#9662;
+      difficulty
+      {/* &#9662; */}
 
       {dropdownOpened && (
         <ul
