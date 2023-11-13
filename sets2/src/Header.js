@@ -24,6 +24,12 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
       }
     };
 
+    const handleEndGame = () => {
+      if (gameStatus !== 'ended') {
+        setGameStatus('ended');
+      }
+    };
+
     const handlePauseGame = () => {
       gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
     };
@@ -44,10 +50,12 @@ export default function Header({ gameStatus, setGameStatus }: HeaderProps) {
         <span
           className="header-link header-button"
           onClick={handleStartEndGame}
-          style={{display: gameStatus === 'ended' ? 'none' : 'flex'}}
+          onClick={handleEndGame}
+          // style={{display: gameStatus === 'ended' ? 'none' : 'flex'}}
         >
           {/* exit */}
-          {LeftButtonText}
+          quit
+          {/* {LeftButtonText} */}
         </span>
       </div>
       {/* <HeaderLeft className="header-item">

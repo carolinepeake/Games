@@ -1,16 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
+import './index.css';
 
 type ModalProps = {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
+  // clickModal:
+  // tag:
 };
 
-export const Modal = ({ text, setText }: ModalProps) => {
+export const Modal = ({
+  text,
+  setText,
+  clickModal = () => console.log('modal clicked - missing handler'),
+  tag = "div"
+}: ModalProps) => {
 
   return (
     <ModalContainer
+      as={tag}
     // onFocusOut={setText('')}
+      onClick={clickModal}
     >
       <ModalText>
         {text}
@@ -18,8 +28,6 @@ export const Modal = ({ text, setText }: ModalProps) => {
     </ModalContainer>
   );
 };
-
-// export default Modal;
 
 const ModalContainer = styled.div`
   position: absolute;

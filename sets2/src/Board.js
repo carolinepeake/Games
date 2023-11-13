@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes, css } from 'styled-components';
 import { unshuffledDeck, shuffleDeck } from './State/createGame';
 import './index.css';
-import Modal from './Modal.tsx';
+import { Modal } from './Modal.tsx';
 import { Button } from './StyledComponents.js';
 import Scoreboard from './Scoreboard.js';
 import Card from './Card/Card.js';
@@ -313,6 +313,25 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
 
   const [extraCards, setExtraCards] = useState(false);
 
+  if (gameStatus === 'idle') {
+    return (
+      <StyledBoard>
+      {deck.slice(0, 12).map((card, index) => (
+          <Card
+            key={card.id}
+            gameStatus={gameStatus}
+            index={index}
+            card={card}
+          />
+      ))}
+        <Modal
+          tag="button"
+          text="Start Game"
+          clickModal={() => setGameStatus('started')}
+        />
+      </StyledBoard>);
+  }
+
   const modal =
   modalText.length > 0 ?
    <Modal text={modalText} setText={setModalText}/>
@@ -322,7 +341,7 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
     <>
     <TopControls
       deck={deck}
-      setExtraCards
+      setExtraCards={setExtraCards}
       difficulty={difficulty}
       setDifficulty={setDifficulty}
     />
@@ -359,6 +378,7 @@ export const Board = ({ gameStatus, setGameStatus }: BoardProps) => {
       {modal}
 
     </StyledBoard>)}
+
     <BottomControls>
       <Scoreboard gameStatus={gameStatus} setGameStatus={setGameStatus} p1Score={p1Score} p2Score={p2Score} activePlayer={activePlayer} handleClickSet={handleClickSet} timeRemaining={timeRemaining} />
     </BottomControls>
