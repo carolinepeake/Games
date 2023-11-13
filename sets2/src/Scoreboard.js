@@ -1,28 +1,33 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from './StyledComponents';
-import { Timer } from './Timer';
+import AddCardsBtn from './AddCardsBtn.js';
+import './index.css';
 
 type ScoreboardProps = {
-  gameStatus: 'idle' | 'started' | 'paused' | 'resumed' | 'ended';
-  setGameStatus: React.Dispatch<React.SetStateAction<string>>;
   // p1Score:
   // p2Score:
   // disabled:
   // handleClickSet:
+  // timeRemaining:
+  // deck:
+  // setExtraCards: React.Dispatch<React.SetStateAction<array>>;
 };
 
-export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score, disabled, handleClickSet}: ScoreboardProps) {
+export default function Scoreboard({
+  p1Score,
+  p2Score,
+  disabled,
+  handleClickSet,
+  timeRemaining,
+  deck,
+  setExtraCards,
+}: ScoreboardProps) {
 
-  const handlePauseGame = () => {
-    gameStatus === 'paused' ? setGameStatus('resumed') : setGameStatus('paused');
-  };
 
-  const RightButtonText = gameStatus === 'paused' ? 'Resume' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause' : '';
 
   return (
-    <Container style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>
-    <SBContainer>
+    <Container >
 
       <Item>
         <Player>
@@ -33,9 +38,20 @@ export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score
         </Score>
       </Item>
 
-      <SetButton onClick={handleClickSet} $disabled={disabled}>
-        SET
-      </SetButton>
+      <BtnContainer>
+        <SetButton
+          $disabled={disabled}
+          onClick={handleClickSet}
+          timeRemaining={timeRemaining}
+        >
+          SET
+        </SetButton>
+
+        <AddCardsBtn
+          deck={deck}
+          setExtraCards={setExtraCards}
+        />
+      </BtnContainer>
 
       <Item>
         <Player>
@@ -46,42 +62,36 @@ export default function Scoreboard({ gameStatus, setGameStatus, p1Score, p2Score
         </Score>
       </Item>
 
-    </SBContainer>
-    <PauseContainer>
-      <PauseButton $color="light" onClick={handlePauseGame} style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>{RightButtonText}</PauseButton>
-      <Timer
-        gameStatus={gameStatus}
-      />
-    </PauseContainer>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   width: 80vw;
   margin: 0 auto;
- /* margin-top: 5vh; */
+  margin-top: 0.5em;
   height: 100%;
-`;
-
-const SBContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin: 0 auto;
+  height: 8rem;
+  font-size: 1.5rem;
   gap: 1rem;
-  width: 100%;
 `;
 
-const Item = styled.div``;
+const Item = styled.div`
+  text-align: center;
+`;
 
 const Player = styled.span`
+  padding-right: 0.5rem;
+  color: darkslategrey;
+  font-weight: bold;
 `;
 
-const Score = styled.span``;
+const Score = styled.span`
+  color: grey;
+`;
 
 const SetButton = styled(Button)`
   background-color: #165bfb;
@@ -91,19 +101,17 @@ const SetButton = styled(Button)`
   ${props => props.$disabled && 'background-color: rgba(22,91,251,0.5)'};
 `;
 
-const PauseContainer = styled.div`
+const BtnContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+  justify-content: flex-end;
   align-items: center;
-  border-left: 1px lightgrey solid;
-  gap: 1rem;
-  padding: 0.5rem 1rem;
+  height: 8rem;
+  align-self: center;
+  margin-top: 1rem;
+
 `;
 
-const PauseButton = styled(Button)`
-  color: #165bfb;
-  border: 1px #165bfb solid;
-`;
 
 
 
