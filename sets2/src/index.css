@@ -2,8 +2,8 @@
   --teal: #59c1fe;
   --white: #ffffff;
   --oldBtnColor: #524FD7;
-  --lightBtnColor: #C29A1D;
-  --darkBtnColor: #001EC2;
+  --lightBtnColor: #4af7ff;
+  --darkBtnColor: #165bfb;
   --pink: #B513C2; /*rgb(181,19,194) */
   --yellow: #C29A1D; /* rgb(194,154,29) */
   --purple: #5009C1; /* rgb(80,9,193) */
@@ -53,6 +53,11 @@ button {
   @media screen and (-ms-high-contrast: active) {
     border: 2px solid currentcolor;
   }
+}
+
+/* reset default browser style for lists */
+ul, ol {
+  list-style-type: none;
 }
 
 h1 {
