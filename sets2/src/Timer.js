@@ -26,6 +26,6 @@ export const Timer = ({ gameStatus }: TimerProps) => {
   };
 
   return (
-    <div >{timerText}</div>
+    <div className="timer">{timerText}</div>
   );
 };
