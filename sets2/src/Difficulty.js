@@ -33,7 +33,7 @@ export default function Difficulty({ difficulty, setDifficulty}: DifficultyProps
       onMouseLeave={() => setDropdownOpened(false)}
     >
       difficulty
-      {/* &#9662; */}
+      &#9662;
 
       {dropdownOpened && (
         <ul
