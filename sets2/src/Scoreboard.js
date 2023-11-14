@@ -12,6 +12,7 @@ type ScoreboardProps = {
   // timeRemaining:
   // deck:
   // setExtraCards: React.Dispatch<React.SetStateAction<array>>;
+  // extraCards:
 };
 
 export default function Scoreboard({
@@ -22,6 +23,7 @@ export default function Scoreboard({
   timeRemaining,
   deck,
   setExtraCards,
+  extraCards
 }: ScoreboardProps) {
 
 
@@ -50,6 +52,7 @@ export default function Scoreboard({
         <AddCardsBtn
           deck={deck}
           setExtraCards={setExtraCards}
+          extraCards={extraCards}
         />
       </BtnContainer>
 
