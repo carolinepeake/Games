@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Button } from './StyledComponents';
 import AddCardsBtn from './AddCardsBtn.js';
 import './index.css';
@@ -22,8 +22,11 @@ export default function Scoreboard({
   handleClickSet,
   timeRemaining,
   deck,
-  setExtraCards,
-  extraCards
+  // setExtraCards,
+  // extraCards,
+  setBoard,
+  board,
+  gameStatus
 }: ScoreboardProps) {
 
 
@@ -40,6 +43,7 @@ export default function Scoreboard({
         </Score>
       </Item>
 
+      {gameStatus !== 'ended' && (
       <BtnContainer>
         <SetButton
           $disabled={disabled}
@@ -51,10 +55,13 @@ export default function Scoreboard({
 
         <AddCardsBtn
           deck={deck}
-          setExtraCards={setExtraCards}
-          extraCards={extraCards}
+          // setExtraCards={setExtraCards}
+          // extraCards={extraCards}
+          setBoard={setBoard}
+          board={board}
+          disabled={disabled}
         />
-      </BtnContainer>
+      </BtnContainer>)}
 
       <Item>
         <Player>
@@ -102,6 +109,12 @@ const SetButton = styled(Button)`
   font-size: 2rem;
   color: white;
   ${props => props.$disabled && 'background-color: rgba(22,91,251,0.5)'};
+  ${props => props.$disabled && css`
+    background: linear-gradient(to right top, white ${100 - props.timeRemaining * 10}%, rgba(22,91,251,0.5) ${100 - props.timeRemaining * 10}%);
+  `};
+ /* ${props => props.$disabled && `background: linear-gradient(to right top, white 100 - ${props.timeRemaining} * 10%, rgba(22,91,251,0.5) 100 - ${props.timeRemaining} * 10%)`}; */
+ /* background: linear-gradient(to right top, white ${props => 100 - props.timeRemaining * 10}%, rgba(22,91,251,0.5) ${props => 100 - props.timeRemaining * 10}%);
+  transition: background 1sec smooth; */
 `;
 
 const BtnContainer = styled.div`
@@ -112,7 +125,6 @@ const BtnContainer = styled.div`
   height: 8rem;
   align-self: center;
   margin-top: 1rem;
-
 `;
 
 
