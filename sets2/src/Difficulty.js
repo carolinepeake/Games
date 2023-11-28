@@ -20,7 +20,7 @@ export default function Difficulty({ difficulty, setDifficulty}: DifficultyProps
     <li
       key={value}
       onClick={() => handleClick(value)}
-      className={difficulty === value && 'dropdown-option-selected'}
+      className={difficulty === value ? 'dropdown-option-selected' : undefined}
     >
       {value}
     </li>
