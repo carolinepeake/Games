@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled, { keyframes, css } from 'styled-components';
 import { unshuffledDeck, shuffleDeck } from '../State/createGame';
 import '../index.css';
@@ -16,6 +16,8 @@ type BoardProps = {
   setGameStatus: React.Dispatch<React.SetStateAction<string>>;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+  // deck:
+  // setDeck:
 };
 
 export const Board = ({
@@ -23,17 +25,23 @@ export const Board = ({
   setGameStatus,
   difficulty,
   setDifficulty,
+  deck,
+  setDeck,
+  // selectedCards,
+  // setActivePlayer,
+  // activePlayer,
+  // setP1Score,
+  // setP2Score,
+  // setSelectedCards,
+  // p1Score,
+  // p2Score,
+  // extraCards,
+  // setExtraCards,
 }: BoardProps) => {
 
-  const [deck, setDeck] = useState([]);
-
-  useEffect(() => {
-    gameStatus === 'idle' && setDeck(shuffleDeck(unshuffledDeck));
-  }, [gameStatus])
+  // const [deck, setDeck] = useState(shuffleDeck(unshuffledDeck));
 
   const [selectedCards, setSelectedCards] = useState([]);
-
-  const [modalText, setModalText] = useState('');
 
   const [p1Score, setP1Score] = useState(0);
 
@@ -41,27 +49,75 @@ export const Board = ({
 
   const [activePlayer, setActivePlayer] = useState('');
 
-  const [timeRemaining, setTimeRemaining] = useState(10);
-
   // const [difficulty, setDifficulty] = useState('Easy');
+
+  // const [extraCards, setExtraCards] = useState(false);
+  const [board, setBoard] = useState(12);
+
+  // const restartGame = () => {
+  //   setGameStatus('idle');
+  //   setDeck(shuffleDeck(unshuffledDeck));
+  //   setSelectedCards([]);
+  //   setActivePlayer('');
+  //   setExtraCards(false);
+  //   setP1Score(0);
+  //   setP2Score(0);
+  // };
+
+  //  useEffect(() => {
+  //   gameStatus === 'idle' && setDeck(shuffleDeck(unshuffledDeck));
+  // }, [gameStatus])
+
+  // useEffect(() => {
+  //   gameStatus === 'idle' && setDeck(shuffleDeck(unshuffledDeck));
+  // }, [gameStatus])
+
+
+
+
+  const [modalText, setModalText] = useState('');
+
+  const [timeRemaining, setTimeRemaining] = useState(10);
+  // const [intervalId, setIntervalId] = useRef(null);
+  const intervalId = useRef(null);
 
   const handleClickSet = () => {
     // start 10 sec countdown
     // allow cards to be clicked on
     setActivePlayer('p1');
+    const id = setInterval(() => {
+      setTimeRemaining(prevSecs => prevSecs - 1);
+    }, 1000);
+    intervalId.current = id;
   };
 
+  // useEffect(() => {
+  //   let interval;
+  //   if (activePlayer.length === 2) {
+  //     interval = setInterval(() => {
+  //       setTimeRemaining(prevSecs => prevSecs - 1);
+  //   }, 1000);
+  //   // } else {
+  //   //   setTimeRemaining(10);
+  //   }
+  //   return () => clearInterval(interval);
+  // }, [activePlayer]);
+
   useEffect(() => {
-    let interval;
-    if (activePlayer.length === 2) {
-      interval = setInterval(() => {
-        setTimeRemaining(prevSecs => prevSecs - 1);
-    }, 1000);
-    } else {
-      setTimeRemaining(10);
+    let timeout;
+    let id = intervalId.current;
+    if (timeRemaining === 0) {
+      clearInterval(id);
+      timeout = setTimeout(() => {
+        setModalText('');
+        setTimeRemaining(10);
+        setSelectedCards([]);
+        setActivePlayer('');
+      }, 1000);
+      setModalText('No set selected');
     }
-    return () => clearInterval(interval);
-  }, [activePlayer]);
+    return () => clearTimeout(timeout);
+  }, [timeRemaining, intervalId]);
 
   function checkSelection(selectedCards) {
     let fill = selectedCards.map(card => card.shading);
@@ -105,6 +161,7 @@ export const Board = ({
       let selection = [...selectedCards, card];
       setSelectedCards([...selectedCards, card]);
       if (selection.length === 3) {
+        clearInterval(intervalId.current);
         let set = checkSelection(selection);
         if (set) {
           setP1Score(prev => prev + 1);
@@ -114,20 +171,30 @@ export const Board = ({
         }
           timeout = setTimeout(() => {
             if (set) {
+              let cardsShowing;
+              if (deck.length > board) {
+                cardsShowing = 12;
+              } else {
+                cardsShowing = deck.length;
+              }
               // DRAW NEXT 3 CARDS
               const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
               setDeck(prevDeck => {
                 let newDeck = prevDeck.slice();
                 for (let i = 0; i < emptySpots.length; i++ ) {
-                  newDeck.splice(emptySpots[i], 1, newDeck[12]);
-                  newDeck.splice(12, 1);
+                  // newDeck.splice(emptySpots[i], 1, newDeck[12]);
+                  // newDeck.splice(12, 1);
+                  newDeck.splice(emptySpots[i], 1, newDeck[cardsShowing]);
+                  newDeck.splice(cardsShowing, 1);
                 }
                 return newDeck;
               });
+              setBoard(12);
             }
             setSelectedCards([]);
             setModalText('');
             setActivePlayer('');
+            setTimeRemaining(10);
           }, 1500);
         }
       }
@@ -202,9 +269,9 @@ export const Board = ({
   // }, [selectedCards, activePlayer]);
 
   useEffect(() => {
-    if (deck.length === 0 && gameStatus === 'started') {
-      setGameStatus('ended');
-    }
+    // if (deck.length === 0 && gameStatus === 'started') {
+    //   setGameStatus('ended');
+    // }
 
     function runBot() {
 
@@ -241,9 +308,16 @@ export const Board = ({
       let secondCard = startIndex + 1;
       let thirdCard = startIndex + 2;
 
-      while (startIndex <= 9) {
-        while (secondCard <= 10) {
-          while (thirdCard <= 11) {
+      let cardsShowing;
+      if (deck.length > board) {
+        cardsShowing = board;
+      } else {
+        cardsShowing = deck.length;
+      }
+
+      while (startIndex <= cardsShowing - 3) {
+        while (secondCard <= cardsShowing - 2) {
+          while (thirdCard <= cardsShowing - 1) {
             let card1 = deck[startIndex];
             card1.index = startIndex;
             let card2 = deck[secondCard];
@@ -277,24 +351,35 @@ export const Board = ({
     let timeout;
 
     if (activePlayer === 'p2') {
-
       timeout = setTimeout(() => {
+        let cardsShowing;
+        if (deck.length > board) {
+          cardsShowing = 12;
+        } else {
+          cardsShowing = deck.length;
+        }
         // DRAW NEXT 3 CARDS
         const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
         setDeck(prevDeck => {
           let newDeck = prevDeck.slice();
           for (let i = 0; i < emptySpots.length; i++ ) {
-            newDeck.splice(emptySpots[i], 1, newDeck[12]);
-            newDeck.splice(12, 1);
+            // newDeck.splice(emptySpots[i], 1, newDeck[12]);
+            // newDeck.splice(12, 1);
+            newDeck.splice(emptySpots[i], 1, newDeck[cardsShowing]);
+            newDeck.splice(cardsShowing, 1);
           }
           return newDeck;
         });
         setSelectedCards([]);
         setModalText('');
         setActivePlayer('');
+        // TODO: if board is 15 cards, rearrange board to shift all cards to fill holes
+        // created by successful set instead of placing new cards in holes
+        setBoard(12);
       }, 1500);
-    } else if (gameStatus === 'started' && activePlayer !== 'p1') {
-      let botTimer = 20000; // Easy
+    } else if ((gameStatus === 'started' || gameStatus === 'resumed') && activePlayer !== 'p1') {
+      // let botTimer = 20000; // Easy
+      let botTimer = 200; // Easy
       if (difficulty === 'Hard') {
         botTimer = 5000;
       } else if (difficulty === 'Medium') {
@@ -304,10 +389,17 @@ export const Board = ({
     }
     return () => clearTimeout(timeout);
 
-  }, [gameStatus, deck, activePlayer, difficulty]);
+  }, [gameStatus, deck, activePlayer, difficulty, board]);
+
+  // function checkWinner() {
+  //   if (deck.length === 0) {
+  //     setGameStatus('ended');
+  //     // setShowFinalScore(true);
+  //   }
+  // }
 
   useEffect(() => {
-    if (gameStatus === 'ended') {
+    if (gameStatus === 'started' && deck.length === 0) {
       if (p1Score > p2Score) {
         setModalText('You Win!');
       } else if (p1Score < p2Score) {
@@ -318,26 +410,6 @@ export const Board = ({
     }
   }, [p1Score, p2Score, gameStatus]);
 
-  const [extraCards, setExtraCards] = useState(false);
-
-  if (gameStatus === 'idle') {
-    return (
-      <StyledBoard>
-      {deck.slice(0, 12).map((card, index) => (
-          <Card
-            key={card.id}
-            gameStatus={gameStatus}
-            index={index}
-            card={card}
-          />
-      ))}
-        <Modal
-          tag="button"
-          text="Start Game"
-          clickModalHandler={() => setGameStatus('started')}
-        />
-      </StyledBoard>);
-  }
 
   const modal =
   modalText.length > 0 ?
@@ -346,17 +418,17 @@ export const Board = ({
 
   return (
     <>
+    {(gameStatus !== 'ended' && gameStatus !== 'idle') && (
     <TopControls
       deck={deck}
       gameStatus={gameStatus}
       setGameStatus={setGameStatus}
-      style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}
-    />
+    />)}
 
-    {deck.length > 0
+    {(deck.length > 0 && gameStatus !== 'ended')
     && (
     <StyledBoard>
-      {deck.slice(0, 12).map((card, index) => (
+    {/* {deck.slice(0, 12).map((card, index) => (
           <Card
             key={card.id}
             gameStatus={gameStatus}
@@ -367,9 +439,9 @@ export const Board = ({
               selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
             }
           />
-      ))}
+      ))} */}
 
-      {extraCards && deck.slice(12, 15).map((card, index) => (
+      {/* {board === 12 && deck.slice(12, 15).map((card, index) => (
         <Card
           key={card.id}
           gameStatus={gameStatus}
@@ -380,23 +452,62 @@ export const Board = ({
             selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
           }
         />
+      ))} */}
+
+
+{deck.length > board + 1 ? deck.slice(0, board).map((card, index) => (
+        <Card
+          key={card.id || undefined}
+          gameStatus={gameStatus}
+          index={index}
+          card={card}
+          handleSelectCard={handleSelectCard}
+          selected={
+            selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
+          }
+        />
+      ))
+   : deck.slice(0, (deck.length - 3)).map((card, index) => (
+        <Card
+          // key={card.id || undefined}
+          key={index}
+          gameStatus={gameStatus}
+          index={index}
+          card={card}
+          handleSelectCard={handleSelectCard}
+          // selected={
+          //   selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
+          // }
+        />
       ))}
 
       {modal}
 
-    </StyledBoard>)}
+      {gameStatus === 'idle' && (
+        <Modal
+          tag="button"
+          text="Start Game"
+          clickModalHandler={() => setGameStatus('started')}
+        />
+      )}
 
+    </StyledBoard>
+    )}
+
+      {gameStatus !== 'idle' && (
       <Scoreboard
         p1Score={p1Score}
         p2Score={p2Score}
         disabled={activePlayer.length === 2}
         handleClickSet={handleClickSet}
         deck={deck}
-        setExtraCards={setExtraCards}
-        extraCards={extraCards}
+        // setExtraCards={setExtraCards}
+        // extraCards={extraCards}
+        setBoard={setBoard}
+        board={board}
         timeRemaining={timeRemaining}
-        style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}
-      />
+        gameStatus={gameStatus}
+      />)}
 
     </>
   );
