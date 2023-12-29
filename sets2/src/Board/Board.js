@@ -7,6 +7,7 @@ import { Button } from '../StyledComponents.js';
 import Scoreboard from '../Scoreboard.js';
 import Card from '../Card/Card.js';
 import TopControls from '../TopControls';
+import { checkSelection } from '../utils/gamePlay';
 
 // TODO: subtract 1 point if incorrect set
 // TO-DO: make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
@@ -27,19 +28,30 @@ export const Board = ({
   setDifficulty,
   deck,
   setDeck,
-  // selectedCards,
-  // setActivePlayer,
-  // activePlayer,
-  // setP1Score,
-  // setP2Score,
-  // setSelectedCards,
-  // p1Score,
-  // p2Score,
-  // extraCards,
-  // setExtraCards,
 }: BoardProps) => {
 
-  // const [deck, setDeck] = useState(shuffleDeck(unshuffledDeck));
+  G: {
+    selectedCards: [],
+    p1Score: 0,
+    p2Score: 0,
+    activePlayer: '', //null
+    difficulty: 'easy',
+    extraCards: false,
+    modalText: '',
+  };
+
+  moves: {
+    clickSet: ,
+    selectCard: ,
+    restartGame: ,
+    endGame: ,
+    startGame: ,
+    pauseGame: ,
+    resumeGame: ,
+    invalidSet: ,
+    findSet: ,
+    timeOut: ,
+  }
 
   const [selectedCards, setSelectedCards] = useState([]);
 
