@@ -30,28 +30,28 @@ export const Board = ({
   setDeck,
 }: BoardProps) => {
 
-  G: {
-    selectedCards: [],
-    p1Score: 0,
-    p2Score: 0,
-    activePlayer: '', //null
-    difficulty: 'easy',
-    extraCards: false,
-    modalText: '',
-  };
+  // G: {
+  //   selectedCards: [],
+  //   p1Score: 0,
+  //   p2Score: 0,
+  //   activePlayer: '', //null
+  //   difficulty: 'easy',
+  //   extraCards: false,
+  //   modalText: '',
+  // };
 
-  moves: {
-    clickSet: ,
-    selectCard: ,
-    restartGame: ,
-    endGame: ,
-    startGame: ,
-    pauseGame: ,
-    resumeGame: ,
-    invalidSet: ,
-    findSet: ,
-    timeOut: ,
-  }
+  // moves: {
+  //   clickSet: ,
+  //   selectCard: ,
+  //   restartGame: ,
+  //   endGame: ,
+  //   startGame: ,
+  //   pauseGame: ,
+  //   resumeGame: ,
+  //   invalidSet: ,
+  //   findSet: ,
+  //   timeOut: ,
+  // }
 
   const [selectedCards, setSelectedCards] = useState([]);
 
@@ -410,18 +410,30 @@ export const Board = ({
   //   }
   // }
 
-  useEffect(() => {
-    if (gameStatus === 'started' && deck.length === 0) {
-      if (p1Score > p2Score) {
-        setModalText('You Win!');
-      } else if (p1Score < p2Score) {
-        setModalText('Bot Wins!');
-      } else {
-        setModalText('Tie!');
-      }
-    }
-  }, [p1Score, p2Score, gameStatus]);
+  // useEffect(() => {
+  //   if (gameStatus === 'started' && deck.length === 0) {
+  //     if (p1Score > p2Score) {
+  //       setModalText('You Win!');
+  //     } else if (p1Score < p2Score) {
+  //       setModalText('Bot Wins!');
+  //     } else {
+  //       setModalText('Tie!');
+  //     }
+  //   }
+  // }, [p1Score, p2Score, gameStatus]);
 
+  // useEffect(() => {
+  //   if (gameStatus === 'ended') {
+
+  //   }
+
+  // }, [gameStatus])
+
+  let scoreboard;
+  if (gameStatus === 'ended') {
+    scoreboard = p1Score > p2Score ? 'You win!' : p1Score < p2Score ? 'Bot wins!' : 'Tie!';
+    setModalText(scoreboard);
+  }
 
   const modal =
   modalText.length > 0 ?
