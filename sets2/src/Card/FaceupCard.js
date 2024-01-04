@@ -12,7 +12,7 @@ type FaceupCardProps = {
     color: string;
     index?: number;
   };
-  id: string;
+  // id: string;
   selected: boolean;
   // prolly not correct
   onSelect: (card: any, index: number) => void;
@@ -21,27 +21,48 @@ type FaceupCardProps = {
 export const FaceupCard = ({
   index,
   card,
-  id,
+  // id,
   selected,
   onSelect
 }: FaceupCardProps) => {
 
+  let className = "card-face";
+  if (selected) {
+    className = "card-face selected";
+  }
+
   //the symbols are not properly responsive: they get uber tiny when screensize decreases
 
   return (
-    <CardFront
-      className={`card-face ${selected ? 'selected' : ''}`}
-      onClick={() => onSelect(card, index)}
+    // <CardFront
+    //   className={`card-face ${selected && 'selected'}`}
+    //   onClick={() => onSelect(card, index)}
+    // >
+    //   {[...Array(card.count).keys()].map((symbol, num) => {
+    //     let key = card.id + 'S' + num;
+    //     return (
+    //       <SymbolContainer key={key}>
+    //         <Symbol color={card.color} shading={card.shading} shape={card.shape} />
+    //       </SymbolContainer>
+    //     );
+    //   })}
+    // </CardFront>
+
+    <div
+    // className={`card-face ${selected && 'selected'}`}
+    // className="card-face selected"
+    className={className}
+    onClick={() => onSelect(card, index)}
     >
-      {[...Array(card.count).keys()].map((symbol, num) => {
-        let key = id + 'S' + num;
-        return (
-          <SymbolContainer key={key}>
-            <Symbol color={card.color} shading={card.shading} shape={card.shape} />
-          </SymbolContainer>
-        );
-      })}
-    </CardFront>
+    {[...Array(card.count).keys()].map((symbol, num) => {
+      let key = card.id + 'S' + num;
+      return (
+        <div key={key}>
+          <Symbol color={card.color} shading={card.shading} shape={card.shape} />
+        </div>
+      );
+    })}
+    </div>
   );
 };
 
@@ -50,7 +71,7 @@ export const FaceupCard = ({
 // :active (element is clicked on) should work as a selector, it does for a split second but then the styles don't stay
 // if can get active to work, can refactor cursor and transform properties to both be under &:hover, &:active {}
 const CardFront = styled.div`
-  padding: calc(10px + 0.05vh) 0;
+  padding: calc(10px + 0.05vh);
   border-radius: inherit;
   &:hover {
     cursor: pointer;

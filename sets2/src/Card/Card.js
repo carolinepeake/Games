@@ -1,22 +1,60 @@
 import React from 'react';
 import styled, { keyframes, css} from 'styled-components';
+import './Card.css';
 import { FaceupCard } from './FaceupCard';
 import { FacedownCard } from './FacedownCard';
 
-export default function Card({gameStatus, card, index, selected, handleSelectCard}) {
+export default function Card({
+  gameStatus,
+  card,
+  index,
+  selected,
+  handleSelectCard
+}) {
+
+  let className = "card";
+
+  if (gameStatus === 'started' || gameStatus === 'resumed') {
+    className = "card flip";
+  }
+  if (gameStatus === 'paused') {
+    className = "card unflip";
+  }
 
   return (
-    <StyledFlip className="card"
-    gameStatus={gameStatus}>
-      <FacedownCard />
-      <FaceupCard
-        // id={card.id}
-        index={index}
-        card={card}
-        selected={selected}
-        onSelect={handleSelectCard}
-      />
-    </StyledFlip>
+    // <StyledFlip
+    //   className="card"
+    //   className={className}
+    //   gameStatus={gameStatus}
+    // >
+    //   <FacedownCard
+    //     gameStatus={gameStatus}
+    //   />
+    //   <FaceupCard
+    //     // id={card.id}
+    //     index={index}
+    //     card={card}
+    //     selected={selected}
+    //     onSelect={handleSelectCard}
+    //   />
+    // </StyledFlip>
+
+    <div
+    // className="card"
+    className={className}
+    // gameStatus={gameStatus}
+    >
+    <FacedownCard
+      gameStatus={gameStatus}
+    />
+    <FaceupCard
+      // id={card.id}
+      index={index}
+      card={card}
+      selected={selected}
+      onSelect={handleSelectCard}
+    />
+    </div>
   );
 }
 
