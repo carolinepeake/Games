@@ -8,6 +8,7 @@ type HeaderProps = {
   setGameStatus: React.Dispatch<React.SetStateAction<string>>;
   difficulty: 'Easy' | 'Medium' | 'Hard';
   setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+  // setDeck
 };
 
 export default function Header({
@@ -15,6 +16,7 @@ export default function Header({
   setGameStatus,
   difficulty,
   setDifficulty,
+  setDeck,
 }: HeaderProps) {
 
   // TO-DO: have floating deal button and then after facedown cards are dealt have floating start game button slide in from the top
@@ -22,9 +24,14 @@ export default function Header({
     // might also want to put a glow behind it
 
     const handleEndGame = () => {
-      if (gameStatus !== 'ended') {
-        setGameStatus('ended');
-      }
+      setDeck([]);
+      // let timeout;
+      // if (gameStatus !== 'ended') {
+      //   timeout = setTimeout(() => {
+      //     setGameStatus('ended')}, 5000);
+      // }
+      // return () => clearTimeout(timeout);
+      setGameStatus('ended');
     };
 
   return (
