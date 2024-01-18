@@ -1,16 +1,16 @@
 
 // could prolly make fully recursive
-const createDeck = () => {
-  let deck = [];
+const createCards = () => {
+  let cards = [];
 
-  let shading = ['solid', 'banded', 'open'];
-  let shape = ['oval', 'diamond', 'squiggle'];
-  let color = ['green', 'purple', 'red'];
-  let count = [1, 2, 3];
+  const shading = ['solid', 'banded', 'open'];
+  const shape = ['oval', 'diamond', 'squiggle'];
+  const color = ['green', 'purple', 'red'];
+  const count = [1, 2, 3];
 
   let id = 0;
 
-  const createCard = (card) => {
+  const createCard = (card = {}) => {
     // could make switch case
     if (card.shading === undefined) {
       for (let i = 0; i < shading.length; i++) {
@@ -39,18 +39,19 @@ const createDeck = () => {
     } else if (Object.keys(card).length === 4) {
       card.id = id.toString();
       id++;
-      deck.push(card);
+      cards.push(card);
       return;
     }
     return;
   };
 
-  createCard({});
+  // createCard({});
+  createCard();
 
-  return deck;
+  return cards;
 };
 
-export const unshuffledDeck = createDeck();
+export const unshuffledDeck = createCards();
 
 export const shuffleDeck = (deck) => {
   let i = deck.length - 1;
@@ -69,52 +70,3 @@ export const shuffleDeck = (deck) => {
 // export const shuffledDeck = shuffleDeck(createDeck());
 
 export const getNewDeck = () => shuffleDeck(unshuffledDeck);
-
-// if card was an array
-
-// export const createDeck = () => {
-//   let deck = [];
-
-//   let shading = ['solid', 'banded', 'open'];
-//   let shape = ['oval', 'diamond', 'squiggle'];
-//   let color = ['green', 'purple', 'red'];
-//   let count = [1, 2, 3];
-
-//   const createCard = (card) => {
-//     // could make switch case
-//     // could make default argument an empty array
-//     if (card.length === 0) {
-//       for (let i = 0; i < shading.length; i++) {
-//         // let cardCopy = card.slice();
-//         // cardCopy.push(shading[i]);
-//         createCard(cardCopy);
-//       }
-//     } else if (card.length === 1) {
-//       for (let i = 0; i < shape.length; i++) {
-//         let cardCopy = card.slice();
-//         cardCopy.push(shape[i]);
-//         createCard(cardCopy);
-//       }
-//     } else if (card.length === 2) {
-//       for (let i = 0; i < color.length; i++) {
-//         let cardCopy = card.slice();
-//         cardCopy.push(color[i]);
-//         createCard(cardCopy);
-//       }
-//     } else if (card.length === 3) {
-//       for (let i = 0; i < count.length; i++) {
-//         let cardCopy = card.slice();
-//         cardCopy.push(count[i]);
-//         createCard(cardCopy);
-//       }
-//     } else if (card.length === 4) {
-//       deck.push(card);
-//       return;
-//     }
-//     return;
-//   };
-
-//   createCard([]);
-
-//   return deck;
-// };
