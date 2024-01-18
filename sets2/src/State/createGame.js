@@ -65,7 +65,10 @@ export const shuffleDeck = (deck) => {
   return deck;
 };
 
-//export const shuffledDeck = shuffleDeck(createDeck());
+// this would export the same deck every time?
+// export const shuffledDeck = shuffleDeck(createDeck());
+
+export const getNewDeck = () => shuffleDeck(unshuffledDeck);
 
 // if card was an array
 
