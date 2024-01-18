@@ -1,72 +1,61 @@
-
-// could prolly make fully recursive
 const createCards = () => {
-  let cards = [];
+  const cards = [];
 
-  const shading = ['solid', 'banded', 'open'];
-  const shape = ['oval', 'diamond', 'squiggle'];
-  const color = ['green', 'purple', 'red'];
-  const count = [1, 2, 3];
+  const numbers = [1, 2, 3];
+  const shadings = ['solid', 'banded', 'open'];
+  const shapes = ['oval', 'diamond', 'squiggle'];
+  const colors = ['green', 'purple', 'red'];
 
   let id = 0;
 
-  const createCard = (card = {}) => {
-    // could make switch case
-    if (card.shading === undefined) {
-      for (let i = 0; i < shading.length; i++) {
-        let cardCopy = {...card};
-        cardCopy.shading = shading[i];
-        createCard(cardCopy);
-      }
-    } else if (card.shape === undefined) {
-      for (let i = 0; i < shape.length; i++) {
-        let cardCopy = {...card};
-        cardCopy.shape = shape[i];
-        createCard(cardCopy);
-      }
-    } else if (card.color === undefined) {
-      for (let i = 0; i < color.length; i++) {
-        let cardCopy = {...card};
-        cardCopy.color = color[i];
-        createCard(cardCopy);
-      }
-    } else if (card.count === undefined) {
-      for (let i = 0; i < count.length; i++) {
-        let cardCopy = {...card};
-        cardCopy.count = count[i];
-        createCard(cardCopy);
-      }
-    } else if (Object.keys(card).length === 4) {
-      card.id = id.toString();
-      id++;
-      cards.push(card);
-      return;
-    }
-    return;
-  };
+    for (let i = 0; i < 81; i++) {
 
-  // createCard({});
-  createCard();
+      const card = {};
+
+      card.number = numbers[i % 3];
+      card.shading = shadings[Math.floor(i / 3) % 3];
+      card.shape = shapes[Math.floor(i / 9) % 3];
+      card.colors = colors[Math.floor(i / 27) % 3];
+      card.id = id.toString();
+
+      cards.push(card);
+
+      id++;
+    }
 
   return cards;
 };
 
-export const unshuffledDeck = createCards();
-
-export const shuffleDeck = (deck) => {
-  let i = deck.length - 1;
+const shuffle = (cards) => {
+  let i = cards.length - 1;
   while (i > 0) {
   // generate random number
     let j = Math.floor(Math.random() * (i + 1));
-    let nextCard = deck[j];
-    deck[j] = deck[i];
-    deck[i] = nextCard;
+    let nextCard = cards[j];
+    cards[j] = cards[i];
+    cards[i] = nextCard;
     i--;
   };
-  return deck;
+  return cards;
 };
 
-// this would export the same deck every time?
-// export const shuffledDeck = shuffleDeck(createDeck());
+const padDeck = (cards) => {
+  let id = 81;
 
-export const getNewDeck = () => shuffleDeck(unshuffledDeck);
+  for (let i = 0; i < 12; i++) {
+
+    const blankCard = {
+      id: id.toString(),
+    };
+
+    cards.push(blankCard);
+
+    id++
+  }
+
+  return cards;
+};
+
+const cards = createCards();
+
+export const getNewDeck = () => padDeck(shuffle(cards));
