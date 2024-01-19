@@ -16,17 +16,17 @@ type ScoreboardProps = {
 };
 
 export default function Scoreboard({
-  p1Score,
-  p2Score,
+  score,
   disabled,
   handleClickSet,
   timeRemaining,
   deck,
   // setExtraCards,
   // extraCards,
-  setBoard,
+  // setBoard,
   board,
-  gameStatus
+  gameStatus,
+  handleAddCards
 }: ScoreboardProps) {
 
 
@@ -39,7 +39,7 @@ export default function Scoreboard({
           You:
         </Player>
         <Score>
-          {`${p1Score} sets`}
+          {`${score[0]} sets`}
         </Score>
       </Item>
 
@@ -55,9 +55,8 @@ export default function Scoreboard({
 
         <AddCardsBtn
           deck={deck}
-          // setExtraCards={setExtraCards}
-          // extraCards={extraCards}
-          setBoard={setBoard}
+          // setBoard={setBoard}
+          handleAddCards={handleAddCards}
           board={board}
           disabled={disabled}
         />
@@ -68,7 +67,7 @@ export default function Scoreboard({
           Bot:
         </Player>
         <Score>
-        {`${p2Score} sets`}
+        {`${score[1]} sets`}
         </Score>
       </Item>
 

@@ -11,7 +11,13 @@ export default function PauseBtn({ gameStatus, setGameStatus }) {
   const RightButtonText = gameStatus === 'paused' ? 'Resume' : gameStatus === 'started' || gameStatus === 'resumed' ? 'Pause' : '';
 
   return (
-    <PauseButton $color="light" onClick={handlePauseGame} style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}>{RightButtonText}</PauseButton>
+    <PauseButton
+      $color="light"
+      // onClick={handlePauseGame}
+      style={{display: gameStatus ===  'idle' || gameStatus === 'ended' ? 'none' : 'flex'}}
+    >
+      {RightButtonText}
+    </PauseButton>
   );
 }
 

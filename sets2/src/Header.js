@@ -13,7 +13,7 @@ type HeaderProps = {
 
 export default function Header({
   gameStatus,
-  setGameStatus,
+  // setGameStatus,
   difficulty,
   setDifficulty,
   setDeck,
@@ -26,12 +26,12 @@ export default function Header({
     const handleEndGame = () => {
       setDeck([]);
       // let timeout;
-      // if (gameStatus !== 'ended') {
-      //   timeout = setTimeout(() => {
-      //     setGameStatus('ended')}, 5000);
-      // }
-      // return () => clearTimeout(timeout);
-      setGameStatus('ended');
+        // if (gameStatus !== 'ended') {
+        //   timeout = setTimeout(() => {
+        //     setGameStatus('ended')}, 5000);
+        // }
+        // return () => clearTimeout(timeout);
+      // setGameStatus('ended');
     };
 
   return (

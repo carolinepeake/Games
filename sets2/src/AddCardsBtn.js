@@ -4,11 +4,10 @@ import { Button } from './StyledComponents.js';
 
 export default function AddCardsBtn({
   deck,
-  // setExtraCards,
-  // extraCards,
-  setBoard,
+  // setBoard,
   board,
-  disabled
+  disabled,
+  handleAddCards
 }) {
 
   const [active, setActive] = useState(false);
@@ -18,12 +17,6 @@ export default function AddCardsBtn({
     const timeout = setTimeout(() => {setActive(true)}, 10000);
     return () => clearTimeout(timeout);
   }, [deck]);
-
-  const handleAddCards = () => {
-    // setExtraCards(true)
-    setBoard(15);
-  };
-
 
   return (
     <StyledButton
