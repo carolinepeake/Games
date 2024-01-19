@@ -13,7 +13,7 @@ import PauseBtn from './PauseBtn';
 export default function TopControls({
   deck,
   gameStatus,
-  setGameStatus,
+  // setGameStatus,
 
 }: TopControlsProps) {
 
@@ -29,7 +29,7 @@ export default function TopControls({
         />
         <PauseBtn
           gameStatus={gameStatus}
-          setGameStatus={setGameStatus}
+          // setGameStatus={setGameStatus}
         />
       </PauseContainer>
     </StyledTopControls>
