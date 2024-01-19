@@ -55,6 +55,7 @@ export const gameReducer = (state, action) => {
       // if 3 cards selected, check if set
       if (selectedCards.length === 3) {
         newState.set = checkSet(selectedCards);
+        // TODO: update score
       }
 
       newState.selectedCards = selectedCards;
@@ -68,9 +69,11 @@ export const gameReducer = (state, action) => {
       const newDeck = replaceCards(deck, selectedCards);
 
       newState.deck = newDeck;
+      newState.cardsShowing = 12;
       newState.set = null;
       newState.selectedCards = [];
       newState.timeRemaining = 10;
+      newState.turn = null;
 
       return newState
     }
@@ -87,6 +90,12 @@ export const gameReducer = (state, action) => {
       const newState = clone(state);
       const { timeRemaining } = newState;
       newState.timeRemaining = timeRemaining - 1;
+      return newState;
+    }
+
+    case 'ADD_CARDS': {
+      const newState = clone(state);
+      newState.cardsShowing = 15;
       return newState;
     }
 
