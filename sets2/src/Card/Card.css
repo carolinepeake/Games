@@ -27,7 +27,6 @@
   display: flex;
   padding: calc(10px + 0.05vh);
   backface-visibility: hidden;
-
  /* border: 0.1em rgba(165, 165, 160, 0.44) solid; */
 }
 
@@ -97,7 +96,6 @@
 .dimmed {
   opacity: 50%;
 }
-
 
 @keyframes Card-flip {
   0% {

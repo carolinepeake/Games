@@ -54,7 +54,7 @@ export const FaceupCard = ({
     className={className}
     onClick={() => onSelect(card, index)}
     >
-    {[...Array(card.count).keys()].map((symbol, num) => {
+    {[...Array(card.number).keys()].map((symbol, num) => {
       let key = card.id + 'S' + num;
       return (
         <div key={key}>
