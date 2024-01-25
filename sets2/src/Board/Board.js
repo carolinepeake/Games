@@ -8,6 +8,7 @@ import Scoreboard from '../Scoreboard.js';
 import Card from '../Card/Card.js';
 import TopControls from '../TopControls';
 import { checkSelection } from '../utils/gamePlay';
+import { gameReducer, getInitialState } from '../State/gameReducer';
 
 // TODO: subtract 1 point if incorrect set
 // TO-DO: make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
@@ -79,12 +80,6 @@ export const Board = ({
   //  useEffect(() => {
   //   gameStatus === 'idle' && setDeck(shuffleDeck(unshuffledDeck));
   // }, [gameStatus])
-
-  // useEffect(() => {
-  //   gameStatus === 'idle' && setDeck(shuffleDeck(unshuffledDeck));
-  // }, [gameStatus])
-
-
 
 
   const [modalText, setModalText] = useState('');
@@ -213,77 +208,77 @@ export const Board = ({
       return () => clearTimeout(timeout);
     };
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   function checkSelection() {
-  //     let fill = selectedCards.map(card => card.shading);
-  //     let shape = selectedCards.map(card => card.shape);
-  //     let color = selectedCards.map(card => card.color);
-  //     let count = selectedCards.map(card => card.count);
+    function checkSelection() {
+      let fill = selectedCards.map(card => card.shading);
+      let shape = selectedCards.map(card => card.shape);
+      let color = selectedCards.map(card => card.color);
+      let count = selectedCards.map(card => card.count);
 
-  //     const distinctiveFill = [...new Set(fill)];
-  //     const distinctiveShape = [...new Set(shape)];
-  //     const distinctiveColor = [...new Set(color)];
-  //     const distinctiveCount = [...new Set(count)];
+      const distinctiveFill = [...new Set(fill)];
+      const distinctiveShape = [...new Set(shape)];
+      const distinctiveColor = [...new Set(color)];
+      const distinctiveCount = [...new Set(count)];
 
-  //     if (distinctiveFill.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveShape.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveColor.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveCount.length === 2) {
-  //       return false;
-  //     }
+      if (distinctiveFill.length === 2) {
+        return false;
+      }
+      if (distinctiveShape.length === 2) {
+        return false;
+      }
+      if (distinctiveColor.length === 2) {
+        return false;
+      }
+      if (distinctiveCount.length === 2) {
+        return false;
+      }
 
-  //     return true;
-  //   };
+      return true;
+    };
 
-  //   let timeout;
+    let timeout;
 
-  //   if (selectedCards.length === 3) {
-  //     const set = checkSelection();
-  //     if (set) {
-  //       if (activePlayer === 'p1') {
-  //         setP1Score(prev => prev + 1);
-  //       } else if (activePlayer === 'p2') {
-  //         setP2Score(prev => prev + 1);
-  //       }
-  //     }
-  //     const modalText = set ? 'You found a set!' : 'Not a set!';
-  //     setModalText(modalText);
-  //     timeout = setTimeout(() => {
-  //       if (set) {
-  //         // DRAW NEXT 3 CARDS
-  //         const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
-  //         setDeck(prevDeck => {
-  //           let newDeck = prevDeck.slice();
-  //           for (let i = 0; i < emptySpots.length; i++ ) {
-  //             newDeck.splice(emptySpots[i], 1, newDeck[12]);
-  //             newDeck.splice(12, 1);
-  //           }
-  //           return newDeck;
-  //         });
-  //         // TO-DO: add cards to player who clicked hand's
-  //           // for now add them to single player's discard pile
-  //       }
-  //       setSelectedCards([]);
-  //       setModalText('');
-  //       setActivePlayer('');
-  //     }, 1500);
-  //   }
+    if (selectedCards.length === 3) {
+      const set = checkSelection();
+      if (set) {
+        if (activePlayer === 'p1') {
+          setP1Score(prev => prev + 1);
+        } else if (activePlayer === 'p2') {
+          setP2Score(prev => prev + 1);
+        }
+      }
+      const modalText = set ? 'You found a set!' : 'Not a set!';
+      setModalText(modalText);
+      timeout = setTimeout(() => {
+        if (set) {
+          // DRAW NEXT 3 CARDS
+          const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
+          setDeck(prevDeck => {
+            let newDeck = prevDeck.slice();
+            for (let i = 0; i < emptySpots.length; i++ ) {
+              newDeck.splice(emptySpots[i], 1, newDeck[12]);
+              newDeck.splice(12, 1);
+            }
+            return newDeck;
+          });
+          // TO-DO: add cards to player who clicked hand's
+            // for now add them to single player's discard pile
+        }
+        setSelectedCards([]);
+        setModalText('');
+        setActivePlayer('');
+      }, 1500);
+    }
 
-  //   return () => clearTimeout(timeout);
+    return () => clearTimeout(timeout);
 
-  // }, [selectedCards, activePlayer]);
+  }, [selectedCards, activePlayer]);
 
   useEffect(() => {
-    // if (deck.length === 0 && gameStatus === 'started') {
-    //   setGameStatus('ended');
-    // }
+    if (deck.length === 0 && gameStatus === 'started') {
+      setGameStatus('ended');
+    }
 
     function runBot() {
 
@@ -389,15 +384,14 @@ export const Board = ({
         // created by successful set instead of placing new cards in holes
         setBoard(12);
       }, 1500);
-    } else if ((gameStatus === 'started' || gameStatus === 'resumed') && activePlayer !== 'p1') {
-      // let botTimer = 20000; // Easy
-      let botTimer = 200; // Easy
-      if (difficulty === 'Hard') {
-        botTimer = 5000;
-      } else if (difficulty === 'Medium') {
-        botTimer = 10000;
-      }
-      timeout = setTimeout(() => runBot(), botTimer);
+    // } else if ((gameStatus === 'started' || gameStatus === 'resumed') && activePlayer !== 'p1') {
+    //   let botTimer = 2000; // Easy
+    //   if (difficulty === 'Hard') {
+    //     botTimer = 5000;
+    //   } else if (difficulty === 'Medium') {
+    //     botTimer = 10000;
+    //   }
+    //   timeout = setTimeout(() => runBot(), botTimer);
     }
     return () => clearTimeout(timeout);
 

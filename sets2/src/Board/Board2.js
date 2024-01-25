@@ -61,21 +61,11 @@ export const Board2 = () => {
   const handleSelectCard = (card, index) => {
     card.index = index;
     dispatch({type: 'SELECT_CARD', payload: { card: card, player: 0 }}); // include clicking player in payload
-  }
+  };
 
-
-  // useEffect(() => {
-  //   let interval;
-  //   if (activePlayer.length === 2) {
-  //     interval = setInterval(() => {
-  //       setTimeRemaining(prevSecs => prevSecs - 1);
-  //   }, 1000);
-  //   // } else {
-  //   //   setTimeRemaining(10);
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [activePlayer]);
-
+  const handleAddCards = () => {
+    dispatch({type: 'ADD_CARDS'});
+  };
 
   useEffect(() => {
     let timeout;
@@ -123,123 +113,8 @@ export const Board2 = () => {
     />
    : null;
 
-  // const handleSelectCard = (card, index) => {
-  //   if (activePlayer !== 'p1') {
-  //     return;
-  //   }
-  //   let timeout;
-  //   if (selectedCards.map(selectedCard => selectedCard.id).includes(card.id)) {
-  //     timeout = setTimeout(() => setModalText(''), 1000);
-  //     setModalText('Already Selected!');
-  //   } else {
-  //     card.index = index;
-  //     let selection = [...selectedCards, card];
-  //     setSelectedCards([...selectedCards, card]);
-  //     if (selection.length === 3) {
-  //       clearInterval(intervalId.current);
-  //       let set = checkSelection(selection);
-  //       if (set) {
-  //         setP1Score(prev => prev + 1);
-  //         setModalText('You found a set!');
-  //       } else {
-  //         setModalText('Not a set!');
-  //       }
-  //         timeout = setTimeout(() => {
-  //           if (set) {
-  //             let cardsShowing;
-  //             if (deck.length > board) {
-  //               cardsShowing = 12;
-  //             } else {
-  //               cardsShowing = deck.length;
-  //             }
-  //             // DRAW NEXT 3 CARDS
-  //             const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
-  //             setDeck(prevDeck => {
-  //               let newDeck = prevDeck.slice();
-  //               for (let i = 0; i < emptySpots.length; i++ ) {
-  //                 newDeck.splice(emptySpots[i], 1, newDeck[cardsShowing]);
-  //                 newDeck.splice(cardsShowing, 1);
-  //               }
-  //               return newDeck;
-  //             });
-  //             setBoard(12);
-  //           }
-  //           setSelectedCards([]);
-  //           setModalText('');
-  //           setActivePlayer('');
-  //           setTimeRemaining(10);
-  //         }, 1500);
-  //       }
-  //     }
-  //     return () => clearTimeout(timeout);
-  //   };
 
-  // useEffect(() => {
 
-  //   function checkSelection() {
-  //     let fill = selectedCards.map(card => card.shading);
-  //     let shape = selectedCards.map(card => card.shape);
-  //     let color = selectedCards.map(card => card.color);
-  //     let count = selectedCards.map(card => card.count);
-
-  //     const distinctiveFill = [...new Set(fill)];
-  //     const distinctiveShape = [...new Set(shape)];
-  //     const distinctiveColor = [...new Set(color)];
-  //     const distinctiveCount = [...new Set(count)];
-
-  //     if (distinctiveFill.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveShape.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveColor.length === 2) {
-  //       return false;
-  //     }
-  //     if (distinctiveCount.length === 2) {
-  //       return false;
-  //     }
-
-  //     return true;
-  //   };
-
-  //   let timeout;
-
-  //   if (selectedCards.length === 3) {
-  //     const set = checkSelection();
-  //     if (set) {
-  //       if (activePlayer === 'p1') {
-  //         setP1Score(prev => prev + 1);
-  //       } else if (activePlayer === 'p2') {
-  //         setP2Score(prev => prev + 1);
-  //       }
-  //     }
-  //     const modalText = set ? 'You found a set!' : 'Not a set!';
-  //     setModalText(modalText);
-  //     timeout = setTimeout(() => {
-  //       if (set) {
-  //         // DRAW NEXT 3 CARDS
-  //         const emptySpots = selectedCards.map(selectedCard => selectedCard.index);
-  //         setDeck(prevDeck => {
-  //           let newDeck = prevDeck.slice();
-  //           for (let i = 0; i < emptySpots.length; i++ ) {
-  //             newDeck.splice(emptySpots[i], 1, newDeck[12]);
-  //             newDeck.splice(12, 1);
-  //           }
-  //           return newDeck;
-  //         });
-  //         // TO-DO: add cards to player who clicked hand's
-  //           // for now add them to single player's discard pile
-  //       }
-  //       setSelectedCards([]);
-  //       setModalText('');
-  //       setActivePlayer('');
-  //     }, 1500);
-  //   }
-
-  //   return () => clearTimeout(timeout);
-
-  // }, [selectedCards, activePlayer]);
 
   // useEffect(() => {
   //   if (deck.length === 0 && gameStatus === 'started') {
@@ -372,12 +247,6 @@ export const Board2 = () => {
   //   }
   // }, [p1Score, p2Score, gameStatus]);
 
-  // useEffect(() => {
-  //   if (gameStatus === 'ended') {
-
-  //   }
-
-  // }, [gameStatus])
 
   // if (state.status === 'ended') {
   //   const scoreboard = state.score[0] > state.score[1] ? 'You win!' : state.score[0] < state.score[1] ? 'Bot wins!' : 'Tie!';
@@ -398,7 +267,7 @@ export const Board2 = () => {
     {(state.deck.length > 0 && state.status !== 'ended')
     && (
     <StyledBoard>
-    {state.deck.slice(0, 12).map((card, index) => (
+    {state.deck.slice(0, state.cardsShowing).map((card, index) => (
           <Card
             key={card.id || undefined}
             gameStatus={state.status}
@@ -426,10 +295,10 @@ export const Board2 = () => {
 
       {state.status !== 'idle' && (
       <Scoreboard
-        p1Score={state.score[0]}
-        p2Score={state.score[1]}
+        score={state.score}
         disabled={!state.turn}
         handleClickSet={handleClickSet}
+        handleAddCards={handleAddCards}
         deck={state.deck}
         board={state.cardsShowing}
         timeRemaining={state.timeRemaining}
