@@ -22,41 +22,15 @@ export const Board2 = () => {
 
   const handleClickSet = () => {
     dispatch({type: 'CLICK_SET', payload: 0}) // payload is player who clicked
+
     // start 10 sec countdown
     const id = setInterval(() => {
       dispatch({type: 'COUNTDOWN'});
       // setTimeRemaining(prevSecs => prevSecs - 1);
     }, 1000);
     intervalId.current = id;
+
   };
-
-  // useEffect(() => {
-  //   let interval;
-  //   if (activePlayer.length === 2) {
-  //     interval = setInterval(() => {
-  //       setTimeRemaining(prevSecs => prevSecs - 1);
-  //   }, 1000);
-  //   // } else {
-  //   //   setTimeRemaining(10);
-  //   }
-  //   return () => clearInterval(interval);
-  // }, [activePlayer]);
-
-  // useEffect(() => {
-  //   let timeout;
-  //   let id = intervalId.current;
-  //   if (timeRemaining === 0) {
-  //     clearInterval(id);
-  //     timeout = setTimeout(() => {
-  //       setModalText('');
-  //       setTimeRemaining(10);
-  //       dispatch('TIMEOUT');
-  //     }, 1000);
-  //     setModalText('No set selected');
-  //   }
-  //   return () => clearTimeout(timeout);
-  // }, [timeRemaining, intervalId]);
-
 
   const handleSelectCard = (card, index) => {
     card.index = index;
@@ -69,10 +43,10 @@ export const Board2 = () => {
 
   useEffect(() => {
     let timeout;
-    // let id = intervalId.current;
+    let id = intervalId.current;
 
     if (state.timeRemaining === 0) {
-      clearInterval(intervalId.current);
+      clearInterval(id);
 
       timeout = setTimeout(() => {
         // setTimeRemaining(10);
@@ -112,8 +86,6 @@ export const Board2 = () => {
       setText={() => 'text'}
     />
    : null;
-
-
 
 
   // useEffect(() => {
