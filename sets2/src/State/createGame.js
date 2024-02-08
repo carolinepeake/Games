@@ -15,7 +15,7 @@ const createCards = () => {
       card.number = numbers[i % 3];
       card.shading = shadings[Math.floor(i / 3) % 3];
       card.shape = shapes[Math.floor(i / 9) % 3];
-      card.colors = colors[Math.floor(i / 27) % 3];
+      card.color = colors[Math.floor(i / 27) % 3];
       card.id = id.toString();
 
       cards.push(card);
@@ -39,23 +39,25 @@ const shuffle = (cards) => {
   return cards;
 };
 
-const padDeck = (cards) => {
-  let id = 81;
+// const padDeck = (cards) => {
+//   let id = 81;
 
-  for (let i = 0; i < 12; i++) {
+//   for (let i = 0; i < 12; i++) {
 
-    const blankCard = {
-      id: id.toString(),
-    };
+//     const blankCard = {
+//       id: id.toString(),
+//     };
 
-    cards.push(blankCard);
+//     cards.push(blankCard);
 
-    id++
-  }
+//     id++
+//   }
 
-  return cards;
-};
+//   return cards;
+// };
 
 const cards = createCards();
 
-export const getNewDeck = () => padDeck(shuffle(cards));
+// export const getNewDeck = () => padDeck(shuffle(cards));
+
+export const getNewDeck = () => shuffle(cards);
