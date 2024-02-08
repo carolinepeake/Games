@@ -1,8 +1,6 @@
 import { getNewDeck } from './createGame';
-import { checkSet, getSet, replaceCards } from '../utils/gamePlay';
 
 // TODO: add action for changing status and status state
-// TODO: add CLICK_SET action and turn state
 // TODO: add TIMEOUT action
 // TODO: add ADD_CARDS action and maybe board size state
 
@@ -20,6 +18,72 @@ const DIFFICULTY_VALUES = {
     label: 'Impossible',
   },
 };
+
+function getSet(deck, cardsShowing) {
+
+  for (let i = 0; i < cardsShowing.length - 2; i++) {
+    let selection = [];
+    let card = deck[i];
+    card.index = i;
+
+    selection.push(card);
+
+    for (let j = 1; j < cardsShowing.length - 1; j++) {
+      let card = deck[j];
+      card.index = j;
+
+      selection.push(card);
+
+      for (let k = 2; k < cardsShowing.length; k++) {
+        let card = deck[k];
+        card.index = k;
+
+        selection.push(card);
+
+        if (checkSet(selection)) {
+          return selection;
+        };
+      }
+    }
+  }
+};
+
+//   let startIndex = 0; // let startIndex = Math.floor(Math.random() * 12);
+//   let secondCard = startIndex + 1;
+//   let thirdCard = startIndex + 2;
+
+//   let cardsShowing;
+//   if (deck.length > board) {
+//   cardsShowing = board;
+//   } else {
+//   cardsShowing = deck.length;
+//   }
+
+// while (startIndex <= cardsShowing - 3) {
+//   while (secondCard <= cardsShowing - 2) {
+//     while (thirdCard <= cardsShowing - 1) {
+//       let card1 = deck[startIndex];
+//       card1.index = startIndex;
+//       let card2 = deck[secondCard];
+//       card2.index = secondCard;
+//       let card3 = deck[thirdCard];
+//       card3.index = thirdCard;
+//       selection.push(card1, card2, card3);
+//       const isSet = checkSet(selection);
+//       if (isSet) {
+
+//       }
+//       thirdCard++;
+//     }
+//     secondCard++;
+//     thirdCard = secondCard + 1;
+//   }
+//   startIndex ++;
+//   secondCard = startIndex + 1;
+//   thirdCard = secondCard + 1;
+// }
+// return;
+// };
 
 function checkFeature(selectedCards, feature) {
   const featureValues = selectedCards.map(card => card[feature]);
@@ -43,7 +107,18 @@ function checkSet(selectedCards) {
 
   return true;
   // return (checkFeature(set, 'color') && checkFeature(set, 'count') && checkFeature(set, 'shape') && checkFeature(set, 'shading'))
-}
+};
+
+function replaceCards(deck, set) {
+  const emptyCells = set.map(card => card.index);
+
+  for (let i = 0; i < emptyCells.length; i++ ) {
+    deck.splice(emptyCells[i], 1, deck[12]);
+    deck.splice(12, 1);
+  }
+
+  return deck;
+};
 
 function checkForWin(deck) {
   if (deck.length === 0) {
@@ -54,7 +129,7 @@ function checkForWin(deck) {
   }
   // check if no set in remaining cards in deck
   return;
-}
+};
 
 // display winner text only if game completed; otherwise display playersboard only
 function getWinner(players) {
@@ -62,7 +137,7 @@ function getWinner(players) {
   // let lrgstSetCnt = 0;
   let totalSetCnt = 0;
     for (const player in players) {
-      const ([id] : { setCnt, name } = player);
+      ({[id] : { setCnt, name }} = player);
       const { setCnt2, name2 } = player;
       totalSetCnt += setCnt;
       let lrgstSetCnt = players[winners[0]].score;
@@ -88,22 +163,22 @@ function getWinner(players) {
     }
   };
 
-  // Test
-  const winnerText = getWinner({
-    '01': {
-      name: 'player1',
-      setCnt: 2,
-    },
-    '02': {
-      name: 'player2',
-      setCnt: 20,
-    },
-    '03': {
-      name: 'player3',
-      setCnt: 2,
-    },
-  });
-  console.log('winnerText', winnerText);
+// Test
+const winnerText = getWinner({
+  '01': {
+    name: 'player1',
+    setCnt: 2,
+  },
+  '02': {
+    name: 'player2',
+    setCnt: 20,
+  },
+  '03': {
+    name: 'player3',
+    setCnt: 2,
+  },
+});
+console.log('winnerText', winnerText);
 
 
 const clone = x => JSON.parse(JSON.stringify(x));
@@ -119,7 +194,7 @@ export const getInitialState = () => ({
   // set: [],
   isSet: null, // null, false, true => module state isVisible && text
   // turn: null,
-  activePlayer = '', // '', 'player1' || '0', 'player2' || '01'
+  activePlayer: '', // '', 'player1' || '0', 'player2' || '01'
   // score: [0, 0],
   players: {
     '01': {
@@ -189,18 +264,16 @@ export const gameReducer = (state, action) => {
 
     case 'SELECT_CARD': {
       const newState = clone(state);
-      // const { selectedCards, turn } = newState;
       const { deck, selectedCards, activePlayer, players, status } = newState;
       const { card, player } = action.payload;
-      // if (player !== turn) {
-      //   return state;
-      // }
+
       if (player !== activePlayer) {
         return state;
       }
       if (selectedCards.map(selectedCard => selectedCard.id).includes(card.id)) {
         return state;
       }
+
       selectedCards.push(card);
       newState.selectedCards = selectedCards;
 
@@ -208,14 +281,14 @@ export const gameReducer = (state, action) => {
         const isSet = checkSet(selectedCards);
         newState.isSet = isSet;
         if (isSet) {
-          setFound();
-            // TODO: update players
+          // setFound(); TODO: write function
+            // TODO: update players' scores
             const newDeck = replaceCards(deck, selectedCards);
             newState.deck = newDeck;
             newState.cardsShowing = Math.min(12, newDeck.length);
         } else {
           // alert(isSet[1]);
-          setNotFound();
+         // setNotFound(); TODO: write function
         }
         setTimeout(() => {
           // this.currentSet[0].bg = this.color2;
@@ -231,11 +304,10 @@ export const gameReducer = (state, action) => {
           // }
           // newState.isSet = isSet;
           newState.selectedCards = [];
-         // newState.set = [];
          newState.timeRemaining = 10;
          newState.turn = null;
          newState.activePlayer = '';
-          // newState.currentSet = [];
+
           if (checkForWin(deck)) {
             const scoreboardText = getWinner(players);
             console.log('scoreboard: ', scoreboardText);
@@ -248,31 +320,6 @@ export const gameReducer = (state, action) => {
       console.log('newState: ', newState);
       return newState;
     }
-
-    // case 'CONTINUE': {
-    //   const newState = clone(state);
-    //   const { deck, selectedCards } = newState;
-    //   const newDeck = replaceCards(deck, selectedCards);
-    //   newState.deck = newDeck;
-    //   newState.cardsShowing = Math.min(12, newDeck.length);
-    //   newState.isSet = null;
-    //   // newState.isSet = false;
-    //   newState.selectedCards = [];
-    //   // newState.set = [];
-    //   newState.timeRemaining = 10;
-    //   newState.turn = null;
-    //   return newState;
-    // }
-
-    // case 'CLEAR': {
-    //   const newState = clone(state);
-    //   newState.isSet = null;
-    //   // newState.isSet = false;
-    //   newState.selectedCards = [];
-    //   // newState.set = [];
-    //   newState.timeRemaining = 10;
-    //   return newState;
-    // }
 
     // case 'COUNTDOWN': {
     //   const newState = clone(state);
