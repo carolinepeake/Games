@@ -7,7 +7,7 @@ import { Button } from '../StyledComponents.js';
 import Scoreboard from '../Scoreboard.js';
 import Card from '../Card/Card.js';
 import TopControls from '../TopControls';
-import { checkSet } from '../utils/gamePlay';
+import checkSet from '../State/gameReducer';
 import { gameReducer, getInitialState } from '../State/gameReducer';
 
 // TODO: subtract 1 point if incorrect set
@@ -20,8 +20,8 @@ export const Board2 = () => {
   // const [timeRemaining, setTimeRemaining] = useState(10);
   const intervalId = useRef(null);
 
-  const handleClickSet = () => {
-    dispatch({type: 'CLICK_SET', payload: 0}) // payload is player who clicked
+  const handleClickSet = (player = '01') => {
+    dispatch({type: 'CLICK_SET', payload: player}) // payload is player who clicked
 
     // start 10 sec countdown
     const id = setInterval(() => {
@@ -32,9 +32,10 @@ export const Board2 = () => {
 
   };
 
-  const handleSelectCard = (card, index) => {
+  const handleSelectCard = (player = 0, card, index) => {
     card.index = index;
-    dispatch({type: 'SELECT_CARD', payload: { card: card, player: 0 }}); // include clicking player in payload
+    // dispatch({type: 'SELECT_CARD', payload: { card: card, player: player }});
+    dispatch({type: 'SELECT_CARD', payload: { card, player }});
   };
 
   const handleAddCards = () => {
@@ -63,20 +64,20 @@ export const Board2 = () => {
   useEffect(() => {
 
     const timeout = setTimeout(() => {
-      if (state.set === true) {
+      if (state.isSet === true) {
         // setTimeRemaining(10);
         dispatch({type: 'CONTINUE'});
       }
-      if (state.set === false) {
+      if (state.isSet === false) {
         dispatch({type: 'CLEAR'});
       }
     }, 1500);
 
     return () => clearTimeout(timeout);
 
-  }, [state.set]);
+  }, [state.isSet]);
 
-  let modalText = state.set ? 'You found a set!' : state.set === false ? 'Not a set' : state.timeRemaining === 0 ? 'No set selected' : '';
+  let modalText = state.isSet ? 'You found a set!' : state.isSet === false ? 'Not a set' : state.timeRemaining === 0 ? 'No set selected' : '';
 
   // could make modalText child and then will only render if value
   const modal =
@@ -89,9 +90,6 @@ export const Board2 = () => {
 
 
   // useEffect(() => {
-  //   if (deck.length === 0 && gameStatus === 'started') {
-  //     setGameStatus('ended');
-  //   }
 
   //   function runBot() {
 
@@ -199,31 +197,6 @@ export const Board2 = () => {
   //   return () => clearTimeout(timeout);
 
   // }, [gameStatus, deck, activePlayer, difficulty, board]);
-
-  // function checkWinner() {
-  //   if (deck.length === 0) {
-  //     setGameStatus('ended');
-  //     // setShowFinalScore(true);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (gameStatus === 'started' && deck.length === 0) {
-  //     if (p1Score > p2Score) {
-  //       setModalText('You Win!');
-  //     } else if (p1Score < p2Score) {
-  //       setModalText('Bot Wins!');
-  //     } else {
-  //       setModalText('Tie!');
-  //     }
-  //   }
-  // }, [p1Score, p2Score, gameStatus]);
-
-
-  // if (state.status === 'ended') {
-  //   const scoreboard = state.score[0] > state.score[1] ? 'You win!' : state.score[0] < state.score[1] ? 'Bot wins!' : 'Tie!';
-  //   setModalText(scoreboard);
-  // }
 
 
 
