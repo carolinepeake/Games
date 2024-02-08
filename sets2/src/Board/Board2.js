@@ -7,8 +7,7 @@ import { Button } from '../StyledComponents.js';
 import Scoreboard from '../Scoreboard.js';
 import Card from '../Card/Card.js';
 import TopControls from '../TopControls';
-import checkSet from '../State/gameReducer';
-import { gameReducer, getInitialState } from '../State/gameReducer';
+import { checkSet, getSet, replaceCards, gameReducer, getInitialState } from '../State/gameReducer';
 
 // TODO: subtract 1 point if incorrect set
 // TO-DO: make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
@@ -93,33 +92,6 @@ export const Board2 = () => {
 
   //   function runBot() {
 
-  //     function checkSelection(selectedCards) {
-  //       let fill = selectedCards.map(card => card.shading);
-  //       let shape = selectedCards.map(card => card.shape);
-  //       let color = selectedCards.map(card => card.color);
-  //       let count = selectedCards.map(card => card.count);
-
-  //       const distinctiveFill = [...new Set(fill)];
-  //       const distinctiveShape = [...new Set(shape)];
-  //       const distinctiveColor = [...new Set(color)];
-  //       const distinctiveCount = [...new Set(count)];
-
-  //       if (distinctiveFill.length === 2) {
-  //         return false;
-  //       }
-  //       if (distinctiveShape.length === 2) {
-  //         return false;
-  //       }
-  //       if (distinctiveColor.length === 2) {
-  //         return false;
-  //       }
-  //       if (distinctiveCount.length === 2) {
-  //         return false;
-  //       }
-
-  //       return true;
-  //     };
-
   //     let selection;
 
   //     let startIndex = 0; // let startIndex = Math.floor(Math.random() * 12);
@@ -143,7 +115,7 @@ export const Board2 = () => {
   //           let card3 = deck[thirdCard];
   //           card3.index = thirdCard;
   //           selection = [card1, card2, card3];
-  //           let isSet = checkSelection(selection);
+  //           let isSet = checkSet(selection);
   //           if (isSet) {
   //             setActivePlayer('p2');
   //             setSelectedCards(selection);
