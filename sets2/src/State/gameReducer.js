@@ -4,40 +4,21 @@ import { getNewDeck } from './createGame';
 // TODO: add TIMEOUT action
 // TODO: add ADD_CARDS action and maybe board size state
 
-export const DIFFICULTY_VALUES = {
-  '1': {
-    speed: 30000,
-    label: 'Easy',
-  },
-  '2': {
-    speed: 20000,
-    label: 'Hard',
-  },
-  '3': {
-    speed: 10000,
-    label: 'Impossible',
-  },
-};
-
 export const getSet = (deck, cardsShowing) => {
-
   for (let i = 0; i < cardsShowing.length - 2; i++) {
     let selection = [];
     let card = deck[i];
     card.index = i;
-
     selection.push(card);
 
     for (let j = 1; j < cardsShowing.length - 1; j++) {
       let card = deck[j];
       card.index = j;
-
       selection.push(card);
 
       for (let k = 2; k < cardsShowing.length; k++) {
         let card = deck[k];
         card.index = k;
-
         selection.push(card);
 
         if (checkSet(selection)) {
@@ -128,7 +109,8 @@ export const checkForWin = (deck) => {
     return false;
   }
   // check if no set in remaining cards in deck
-  return;
+
+  return true;
 };
 
 // display winner text only if game completed; otherwise display playersboard only
@@ -137,13 +119,17 @@ export const getWinner = (players) => {
   // let lrgstSetCnt = 0;
   let totalSetCnt = 0;
     for (const player in players) {
-      ({[id] : { setCnt, name }} = player);
-      const { setCnt2, name2 } = player;
+      // ({[id] : { setCnt, name }} = player);
+      const id = `${player}`; // const id = player;
+      const { setCnt, name } = players[player];
+      const { setCnt2, name2 } = players[player];
+      const { playerobject3 } = players[id];
       totalSetCnt += setCnt;
       let lrgstSetCnt = players[winners[0]].score;
-      console.log('setCnt: ', setCnt, 'setCnt2: ', setCnt2, 'name: ', name, 'name2: ', name2, 'id: ', id, 'player: ', player, 'players: ', players, 'totalSetCnt :', totalSetCnt);
+      console.log('setCnt: ', setCnt, 'setCnt2: ', setCnt2, 'name: ', name, 'name2: ', name2, 'id: ', id, 'player: ', player, 'players: ', players, 'totalSetCnt :', totalSetCnt, 'playerobject3', playerobject3, 'id', id);
       if (setCnt > lrgstSetCnt) {
         winners = [id];
+        // winners = [ player ];
         // lrgstSetCnt = setCnt;
       } else if (setCnt === lrgstSetCnt) {
         winners.push(id);
@@ -257,14 +243,13 @@ export const gameReducer = (state, action) => {
         return state;
       }
       const newState = clone(state);
-      // newState.turn = action.payload;
       newState.activePlayer = action.payload;
       return newState;
     }
 
     case 'SELECT_CARD': {
       const newState = clone(state);
-      const { deck, selectedCards, activePlayer, players, status } = newState;
+      const { deck, selectedCards, activePlayer, players } = newState;
       const { card, player } = action.payload;
 
       if (player !== activePlayer) {
@@ -279,17 +264,19 @@ export const gameReducer = (state, action) => {
 
       if (selectedCards.length === 3) {
         const isSet = checkSet(selectedCards);
-        newState.isSet = isSet;
         if (isSet) {
-          // setFound(); TODO: write function
-            // TODO: update players' scores
+          // setFound(); TODO: write function // might have function be an action dispatched as part of gameSettingsReducer
+            // maybe trying to divide too much; doesn't neatly separate
+          // could be a dispatch to gameSettingsReducer (this would be gamePlayReducer)
+            // TODO: update players' scores (players, difficulty, status = gameSettings)
             const newDeck = replaceCards(deck, selectedCards);
             newState.deck = newDeck;
             newState.cardsShowing = Math.min(12, newDeck.length);
         } else {
           // alert(isSet[1]);
-         // setNotFound(); TODO: write function
+         // setNotFound(); TODO: write function // might be sufficient to just show alert
         }
+        newState.isSet = isSet;
         setTimeout(() => {
           // this.currentSet[0].bg = this.color2;
           // this.currentSet[1].bg = this.color2;
@@ -304,11 +291,15 @@ export const gameReducer = (state, action) => {
           // }
           // newState.isSet = isSet;
           newState.selectedCards = [];
-         newState.timeRemaining = 10;
-         newState.turn = null;
-         newState.activePlayer = '';
+          newState.timeRemaining = 10;
+          // newState.turn = null;
+          newState.activePlayer = '';
 
+          // if (checkForWin == true), might want to dispatch action from gameSettingsReducer (settings / context?) (perhaps simply changing status state and/or calling getWinner function)
+          // and dispatch CHECK_FOR_WIN action from within the SELECT_CARD action
           if (checkForWin(deck)) {
+            // can checkForWin outside of timeout, but then dispatch END_GAME (as opposed to QUIT_GAME) action in gameSettingsReducer
+            // END_GAME can update status, and run the getWinner function
             const scoreboardText = getWinner(players);
             console.log('scoreboard: ', scoreboardText);
             newState.status = 'ended';
@@ -338,13 +329,14 @@ export const gameReducer = (state, action) => {
 
     }
 
+    // maybe move to gameSettingsReducer
     case 'SELECT_DIFFICULTY': {
       if (state.difficulty === action.payload) {
         return state;
       }
       const newState = clone(state);
       newState.difficulty = action.payload;
-      // DIFFICULTY_VALUES = obj providing milliseconds and dropdown label values for state values
+      // DIFFICULTY_VALUES = obj providing milliseconds and dropdown label values for state values in gameConstants file
       return newState;
     }
 
@@ -353,3 +345,27 @@ export const gameReducer = (state, action) => {
       return state
   }
 };
+
+
+  // G: {
+  //   selectedCards: [],
+  //   p1Score: 0,
+  //   p2Score: 0,
+  //   activePlayer: '', //null
+  //   difficulty: 'easy',
+  //   extraCards: false,
+  //   modalText: '',
+  // };
+
+  // moves: {
+  //   clickSet: ,
+  //   selectCard: ,
+  //   restartGame: ,
+  //   endGame: ,
+  //   startGame: ,
+  //   pauseGame: ,
+  //   resumeGame: ,
+  //   invalidSet: ,
+  //   findSet: ,
+  //   timeOut: ,
+  // }
