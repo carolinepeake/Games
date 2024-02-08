@@ -4,7 +4,7 @@ import { getNewDeck } from './createGame';
 // TODO: add TIMEOUT action
 // TODO: add ADD_CARDS action and maybe board size state
 
-const DIFFICULTY_VALUES = {
+export const DIFFICULTY_VALUES = {
   '1': {
     speed: 30000,
     label: 'Easy',
@@ -19,7 +19,7 @@ const DIFFICULTY_VALUES = {
   },
 };
 
-function getSet(deck, cardsShowing) {
+export const getSet = (deck, cardsShowing) => {
 
   for (let i = 0; i < cardsShowing.length - 2; i++) {
     let selection = [];
@@ -85,13 +85,13 @@ function getSet(deck, cardsShowing) {
 // return;
 // };
 
-function checkFeature(selectedCards, feature) {
+export const checkFeature = (selectedCards, feature) => {
   const featureValues = selectedCards.map(card => card[feature]);
   const uniqueValues = [...new Set(featureValues)];
   return !(uniqueValues.length === 2);
 };
 
-function checkSet(selectedCards) {
+export const checkSet = (selectedCards) => {
   if (!checkFeature(set, 'color')) {
     return false;
   }
@@ -109,7 +109,7 @@ function checkSet(selectedCards) {
   // return (checkFeature(set, 'color') && checkFeature(set, 'count') && checkFeature(set, 'shape') && checkFeature(set, 'shading'))
 };
 
-function replaceCards(deck, set) {
+export const replaceCards = (deck, set) => {
   const emptyCells = set.map(card => card.index);
 
   for (let i = 0; i < emptyCells.length; i++ ) {
@@ -120,7 +120,7 @@ function replaceCards(deck, set) {
   return deck;
 };
 
-function checkForWin(deck) {
+export const checkForWin = (deck) => {
   if (deck.length === 0) {
     return true;
   }
@@ -132,7 +132,7 @@ function checkForWin(deck) {
 };
 
 // display winner text only if game completed; otherwise display playersboard only
-function getWinner(players) {
+export const getWinner = (players) => {
   let winners = [];
   // let lrgstSetCnt = 0;
   let totalSetCnt = 0;
@@ -161,10 +161,10 @@ function getWinner(players) {
     } else {
       return 'Tie!';
     }
-  };
+};
 
 // Test
-const winnerText = getWinner({
+export const winnerText = getWinner({
   '01': {
     name: 'player1',
     setCnt: 2,
