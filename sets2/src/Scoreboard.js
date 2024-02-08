@@ -16,7 +16,8 @@ type ScoreboardProps = {
 };
 
 export default function Scoreboard({
-  score,
+  // score,
+  players,
   disabled,
   handleClickSet,
   timeRemaining,
@@ -29,7 +30,23 @@ export default function Scoreboard({
   handleAddCards
 }: ScoreboardProps) {
 
-
+  const playerIds = Object.keys(players);
+  const scoreboard = playerIds.map(id => {
+    const name = players[id].name;
+    const score = players[id].setCnt;
+    return (
+      <Item>
+        <Player>
+          You:
+          {name}
+        </Player>
+        <Score>
+          {`${score} sets`}
+          {/* {`${players.01.setCnt} sets`} */}
+        </Score>
+      </Item>
+    );
+  });
 
   return (
     <Container >
@@ -37,9 +54,10 @@ export default function Scoreboard({
       <Item>
         <Player>
           You:
+
         </Player>
         <Score>
-          {`${score[0]} sets`}
+          {/* {`${players.01.setCnt} sets`} */}
         </Score>
       </Item>
 
@@ -67,9 +85,12 @@ export default function Scoreboard({
           Bot:
         </Player>
         <Score>
-        {`${score[1]} sets`}
+        {/* {`${score[1]} sets`} */}
+        {/* {`${players.02.setCnt} sets`} */}
         </Score>
       </Item>
+
+      {scoreboard}
 
     </Container>
   );
