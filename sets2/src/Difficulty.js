@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './index.css';
 import './App.css';
+import { DIFFICULTY_VALUES } from './State/gameConstants';
 
 type DifficultyProps = {
   difficulty: 'Easy' | 'Medium' | 'Hard';
