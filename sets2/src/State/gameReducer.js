@@ -72,7 +72,7 @@ export const checkFeature = (selectedCards, feature) => {
   return !(uniqueValues.length === 2);
 };
 
-export const checkSet = (selectedCards) => {
+export const checkSet = (set) => {
   if (!checkFeature(set, 'color')) {
     return false;
   }
@@ -116,7 +116,7 @@ export const checkForWin = (deck) => {
 // display winner text only if game completed; otherwise display playersboard only
 export const getWinner = (players) => {
   let winners = [];
-  // let lrgstSetCnt = 0;
+  let lrgstSetCnt = 0;
   let totalSetCnt = 0;
     for (const player in players) {
       // ({[id] : { setCnt, name }} = player);
@@ -125,17 +125,16 @@ export const getWinner = (players) => {
       const { setCnt2, name2 } = players[player];
       const { playerobject3 } = players[id];
       totalSetCnt += setCnt;
-      let lrgstSetCnt = players[winners[0]].score;
       console.log('setCnt: ', setCnt, 'setCnt2: ', setCnt2, 'name: ', name, 'name2: ', name2, 'id: ', id, 'player: ', player, 'players: ', players, 'totalSetCnt :', totalSetCnt, 'playerobject3', playerobject3, 'id', id);
       if (setCnt > lrgstSetCnt) {
         winners = [id];
         // winners = [ player ];
-        // lrgstSetCnt = setCnt;
+        lrgstSetCnt = setCnt;
       } else if (setCnt === lrgstSetCnt) {
         winners.push(id);
       }
     }
-    // if !(21 <= totalSetCnt && totalSetCnt >= 27) // learn how to write sysinctly
+
     if (totalSetCnt < 21 || totalSetCnt > 27) {
       console.error("impossible total sets count");
       return;
@@ -170,16 +169,13 @@ console.log('winnerText', winnerText);
 const clone = x => JSON.parse(JSON.stringify(x));
 
 export const getInitialState = () => ({
-  status: 'idle', // starting, inPlay, paused, ended
-    // idle, start, pause, resume, end
+  status: 'idle',
   deck: getNewDeck(),
   board: [],
   cardsShowing: 12,
   // boardSize: 12 // don't need both boardSize and board b/c can just grow board when 3 more cards button clicked
   selectedCards: [],
-  // set: [],
   isSet: null, // null, false, true => module state isVisible && text
-  // turn: null,
   activePlayer: '', // '', 'player1' || '0', 'player2' || '01'
   // score: [0, 0],
   players: {
@@ -214,12 +210,6 @@ export const gameReducer = (state, action) => {
       return newState;
     }
 
-    // case 'GAME_OVER': {
-    //   const newState = clone(state);
-    //   newState.status = 'ended';
-    //   return newState;
-    // }
-
     case 'PAUSE': {
       const newState = clone(state);
       newState.status = 'pause';
@@ -231,12 +221,6 @@ export const gameReducer = (state, action) => {
       newState.status = 'inPlay';
       return newState;
     }
-
-    // case 'PLAY': {
-    //   const newState = clone(state);
-    //   newState.status = 'inPlay';
-    //   return newState;
-    // }
 
     case 'CLICK_SET': {
       if (state.activePlayer) {
@@ -269,6 +253,7 @@ export const gameReducer = (state, action) => {
             // maybe trying to divide too much; doesn't neatly separate
           // could be a dispatch to gameSettingsReducer (this would be gamePlayReducer)
             // TODO: update players' scores (players, difficulty, status = gameSettings)
+            newState.players[player].setCnt = newState.players[player].setCnt + 1;
             const newDeck = replaceCards(deck, selectedCards);
             newState.deck = newDeck;
             newState.cardsShowing = Math.min(12, newDeck.length);
@@ -326,7 +311,6 @@ export const gameReducer = (state, action) => {
       const newState = clone(state);
       newState.cardsShowing = 15;
       return newState;
-
     }
 
     // maybe move to gameSettingsReducer
@@ -347,25 +331,5 @@ export const gameReducer = (state, action) => {
 };
 
 
-  // G: {
-  //   selectedCards: [],
-  //   p1Score: 0,
-  //   p2Score: 0,
-  //   activePlayer: '', //null
-  //   difficulty: 'easy',
-  //   extraCards: false,
-  //   modalText: '',
-  // };
 
-  // moves: {
-  //   clickSet: ,
-  //   selectCard: ,
-  //   restartGame: ,
-  //   endGame: ,
-  //   startGame: ,
-  //   pauseGame: ,
-  //   resumeGame: ,
-  //   invalidSet: ,
-  //   findSet: ,
-  //   timeOut: ,
-  // }
+
