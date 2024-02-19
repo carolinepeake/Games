@@ -52,6 +52,7 @@ const ModalContainer = styled.div`
     left: 50%;
     top: 50%;
     box-shadow: 5px 5px 10px 1px rgba(63, 61, 61, 0.9);
+    font-size: 32px;
   `};
 `;
 
