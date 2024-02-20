@@ -1,10 +1,20 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Board } from './Board';
-import Header from './Header';
-import './App.css';
-import './index.css';
-import { Button } from './StyledComponents';
+// import React, { useState } from 'react';
+// import styled from 'styled-components';
+// import { Board } from './Board';
+// import Header from './Header';
+// import './App.css';
+// import './index.css';
+// import { Button } from './StyledComponents';
+
+import { render, screen } from '@testing-library/react';
+import App from './App';
+
+test('renders learn react link', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn react/i);
+  expect(linkElement).toBeInTheDocument();
+});
+
 
 const App = () => {
 
