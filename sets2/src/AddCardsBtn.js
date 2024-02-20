@@ -2,13 +2,19 @@ import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Button } from './StyledComponents.js';
 
+type AddCardsBtnProps = {
+  // deck: ;
+  // board: ;
+  // disabled: ;
+  // handleAddCards: ;
+};
+
 export default function AddCardsBtn({
   deck,
-  // setBoard,
-  board,
-  disabled,
+  cardsShowing,
+  $disabled,
   handleAddCards
-}) {
+}: AddCardsBtnProps) {
 
   const [active, setActive] = useState(false);
 
@@ -20,10 +26,7 @@ export default function AddCardsBtn({
 
   return (
     <StyledButton
-      // $disabled={!active || extraCards || disabled}
-      $disabled={!active || board === 15 || disabled}
-      // disabled={!active || extraCards || disabled}
-      disabled={!active || board === 15 || disabled}
+      disabled={!active || cardsShowing === 15 || $disabled}
       onClick={handleAddCards}
     >
       Add 3 More Cards
@@ -33,14 +36,17 @@ export default function AddCardsBtn({
 
 const StyledButton = styled(Button)`
   margin-top: 1rem;
-  ${props => !props.$disabled && 'color: blue'};
   box-shadow: none;
-  &:hover {
-    box-shadow: none;
-    ${props => !props.$disabled && css`
+
+  ${props => !props.disabled && css `
+    color: blue;
+    &:hover {
       text-decoration: underline;
       font-weight: bold;
-    `};
+     /* box-shadow: none; */
+    };
+  `};
+  &:hover {
+    box-shadow: none;
   }
-
 `;
