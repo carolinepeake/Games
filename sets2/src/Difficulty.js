@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
-import './index.css';
-import './App.css';
+// import './index.css';
+import './Header/Header.css';
+import Dropdown from './Dropdown';
 import { DIFFICULTY_VALUES } from './State/gameConstants';
 
 type DifficultyProps = {
-  difficulty: 'Easy' | 'Medium' | 'Hard';
-  setDifficulty: React.Dispatch<React.SetStateAction<string>>;
+  difficulty: '1' | '2' | '3';
+  // handleSelectDifficulty:
 };
 
-export default function Difficulty({ difficulty, setDifficulty}: DifficultyProps) {
+export default function Difficulty({
+  difficulty,
+  handleSelectDifficulty
+}: DifficultyProps) {
+
   const [dropdownOpened, setDropdownOpened] = useState(false);
 
-  function handleClick(option) {
-    setDifficulty(option);
-  }
-
-  let options = ['Easy', 'Medium', 'Hard'];
-
-  const dropdownOptions = options.map((value, i) => (
-    <li
-      key={value}
-      onClick={() => handleClick(value)}
-      className={difficulty === value ? 'dropdown-option-selected' : undefined}
-    >
-      {value}
-    </li>
+  const dropdownOptions = DIFFICULTY_VALUES.map(({ id, label, speed }) => (
+    <Dropdown
+      clickHandler={handleSelectDifficulty}
+      key={id}
+      value={speed}
+      id={id}
+      label={label}
+      selected={difficulty === id}
+      difficulty={difficulty}
+    />
   ));
 
   return (
