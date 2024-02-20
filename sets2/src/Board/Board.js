@@ -2,90 +2,63 @@ import React, { useState, useEffect, useRef, useReducer } from "react";
 import styled, { keyframes, css } from 'styled-components';
 import { unshuffledDeck, shuffleDeck } from '../State/createGame';
 import '../index.css';
+import '../App.css';
+import './Board.css';
 import { Modal } from '../Modal.tsx';
 import { Button } from '../StyledComponents.js';
 import Scoreboard from '../Scoreboard.js';
 import Card from '../Card/Card.js';
-import TopControls from '../TopControls';
+import { Timer } from '../Timer';
 import { checkSet, getSet, replaceCards, gameReducer, getInitialState } from '../State/gameReducer';
 import { DIFFICULTY_VALUES } from '../State/gameConstants';
 // TODO: subtract 1 point if incorrect set
 // TO-DO: make shuffling hands or something to do with shuffling while app is loading or cards are being dealt
 
 type BoardProps = {
-  status: 'idle' | 'starting' | 'paused' | 'inPlay' | 'ended';
-  difficulty: '1' | '2' | '3';
+  state: {
+    status: 'idle' | 'starting' | 'paused' | 'inPlay' | 'ended';
+    difficulty: '1' | '2' | '3';
+  };
+  // dispatch;
+  // handleSelectCard
+  // handleClickAddCards
+  // handleClickSet
+  // handleClickPause,
+  // handleStartGame
 };
 
 export const Board = ({
-  status,
-  difficulty,
+  state: {
+    status,
+    deck,
+    cardsShowing,
+    selectedCards,
+    isSet,
+    activePlayer,
+    players,
+    difficulty
+  },
+  dispatch,
+  handleSelectCard,
+  handleClickAddCards,
+  handleClickSet,
+  handleClickPause,
+  handleStartGame,
 }: BoardProps) => {
 
-  // maybe can separate actions and state and pass down separately, like pass down state mostly to StyledBoard component and dispatch mostly to Scoreboard component
-  const [state, dispatch] = useReducer(gameReducer, getInitialState());
+  const [modalText, setModalText] = useState('');
 
-  // const [timeRemaining, setTimeRemaining] = useState(10);
-  const intervalId = useRef(null);
+  // let text;
 
-  const handleClickSet = (player = '01') => {
-    dispatch({type: 'CLICK_SET', payload: player}) // payload is player who clicked
+  // text =
+  //   isSet ? 'You found a set!' :
+  //   isSet === false ? 'Not a set' :
+  //   // isSet === null ? '' :
+  //   status === 'idle' ? 'Start Game' :
+  //   status === 'ended' ? 'Play Again' :
+  //   '';
 
-    // start 10 sec countdown
-    const id = setInterval(() => {
-      dispatch({type: 'COUNTDOWN'});
-      // setTimeRemaining(prevSecs => prevSecs - 1);
-    }, 1000);
-    intervalId.current = id;
-
-  };
-
-  const handleSelectCard = (player = 0, card, index) => {
-    card.index = index;
-    // dispatch({type: 'SELECT_CARD', payload: { card: card, player: player }});
-    dispatch({type: 'SELECT_CARD', payload: { card, player }});
-  };
-
-  const handleAddCards = () => {
-    dispatch({type: 'ADD_CARDS'});
-  };
-
-  useEffect(() => {
-    let timeout;
-    let id = intervalId.current;
-
-    if (state.timeRemaining === 0) {
-      clearInterval(id);
-
-      timeout = setTimeout(() => {
-        // setTimeRemaining(10);
-        dispatch('TIMEOUT');
-      }, 1000);
-    }
-
-    return () => clearTimeout(timeout);
-
-  }, [state.timeRemaining]);
-
-
-  // TODO: refactor updating state and showing modal after set determination
-  useEffect(() => {
-
-    const timeout = setTimeout(() => {
-      if (state.isSet === true) {
-        // setTimeRemaining(10);
-        dispatch({type: 'CONTINUE'});
-      }
-      if (state.isSet === false) {
-        dispatch({type: 'CLEAR'});
-      }
-    }, 1500);
-
-    return () => clearTimeout(timeout);
-
-  }, [state.isSet]);
-
-  let modalText = state.isSet ? 'You found a set!' : state.isSet === false ? 'Not a set' : state.timeRemaining === 0 ? 'No set selected' : '';
+    // setModalText(text);
 
   // could make modalText child and then will only render if value
   const modal =
@@ -187,56 +160,57 @@ export const Board = ({
 
   return (
     <>
-    {(state.status !== 'ended' && state.status !== 'idle') && (
-    <TopControls
-      deck={state.deck}
-      gameStatus={state.status}
-      // setGameStatus={dispatch}
-    />)}
+      {(status !== 'ended' && status !== 'idle') && (
+        <div className="flexbox top-controls">
+          <div>
+            {`Cards Remaining: ${deck.length}`}
+          </div>
+            <Timer
+              status={status}
+              handleClickPause={handleClickPause}
+            />
+        </div>
+      )}
 
-    {(state.deck.length > 0 && state.status !== 'ended')
-    && (
-    <StyledBoard>
-    {state.deck.slice(0, state.cardsShowing).map((card, index) => (
+    {(deck.length > 0 && status !== 'ended') && (
+      <StyledBoard>
+        {deck.slice(0, cardsShowing).map((card, index) => (
           <Card
             key={card.id || undefined}
-            gameStatus={state.status}
+            status={status}
             index={index}
             card={card}
             handleSelectCard={handleSelectCard}
-            selected={
-              state.selectedCards.map(selectedCard => selectedCard.id).includes(card.id)
-            }
+            selected={selectedCards.map(selectedCard => selectedCard.id).includes(card.id)}
           />
-      ))}
-
-      {modal}
-
-      {state.status === 'idle' && (
-        <Modal
-          tag="button"
-          text="Start Game"
-          clickModalHandler={() => dispatch({type: 'START'})}
-        />
-      )}
-
-    </StyledBoard>
+        ))}
+        {modal}
+        {status === 'idle' && (
+          <Modal
+            tag="button"
+            text="Start Game"
+            clickModalHandler={handleStartGame}
+            // clickModalHandler={() => dispatch({type: 'START'})}
+          />
+        )}
+      </StyledBoard>
     )}
 
-      {state.status !== 'idle' && (
+    {status !== 'idle' && (
       <Scoreboard
-        // score={state.players}
-        players={state.players}
-        disabled={!state.activePlayer}
+        players={players}
+        $disabled={activePlayer}
         handleClickSet={handleClickSet}
-        handleAddCards={handleAddCards}
-        deck={state.deck}
-        board={state.cardsShowing}
-        timeRemaining={state.timeRemaining}
-        gameStatus={state.status}
-      />)}
-
-    </>
+        handleAddCards={handleClickAddCards}
+        deck={deck}
+        cardsShowing={cardsShowing}
+        status={status}
+        dispatch={dispatch}
+        setModalText={setModalText}
+        activePlayer={activePlayer}
+      />
+    )}
+  </>
   );
 };
 
