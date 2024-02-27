@@ -1,70 +1,35 @@
 import { getNewDeck } from './createGame';
 
-// TODO: add action for changing status and status state
-// TODO: add TIMEOUT action
-// TODO: add ADD_CARDS action and maybe board size state
-
 export const getSet = (deck, cardsShowing) => {
-  for (let i = 0; i < cardsShowing.length - 2; i++) {
-    let selection = [];
-    let card = deck[i];
-    card.index = i;
-    selection.push(card);
-
-    for (let j = 1; j < cardsShowing.length - 1; j++) {
-      let card = deck[j];
-      card.index = j;
-      selection.push(card);
-
-      for (let k = 2; k < cardsShowing.length; k++) {
-        let card = deck[k];
-        card.index = k;
-        selection.push(card);
+  let startIndex = 0; // let startIndex = Math.floor(Math.random() * 12);
+  let secondCard = startIndex + 1;
+  let thirdCard = startIndex + 2;
+  while (startIndex < cardsShowing - 2) {
+    while (secondCard < cardsShowing - 1) {
+      while (thirdCard < cardsShowing) {
+        let selection = [];
+        let card1 = deck[startIndex];
+        card1.index = startIndex;
+        let card2 = deck[secondCard];
+        card2.index = secondCard;
+        let card3 = deck[thirdCard];
+        card3.index = thirdCard;
+        selection.push(card1, card2, card3);
 
         if (checkSet(selection)) {
           return selection;
-        };
+        }
+        thirdCard++
       }
+      secondCard++
+      thirdCard = secondCard + 1;
     }
+    startIndex ++;
+    secondCard = startIndex + 1;
+    thirdCard = secondCard + 1;
   }
+  return null;
 };
-
-//   let startIndex = 0; // let startIndex = Math.floor(Math.random() * 12);
-//   let secondCard = startIndex + 1;
-//   let thirdCard = startIndex + 2;
-
-//   let cardsShowing;
-//   if (deck.length > board) {
-//   cardsShowing = board;
-//   } else {
-//   cardsShowing = deck.length;
-//   }
-
-// while (startIndex <= cardsShowing - 3) {
-//   while (secondCard <= cardsShowing - 2) {
-//     while (thirdCard <= cardsShowing - 1) {
-//       let card1 = deck[startIndex];
-//       card1.index = startIndex;
-//       let card2 = deck[secondCard];
-//       card2.index = secondCard;
-//       let card3 = deck[thirdCard];
-//       card3.index = thirdCard;
-//       selection.push(card1, card2, card3);
-//       const isSet = checkSet(selection);
-//       if (isSet) {
-
-//       }
-//       thirdCard++;
-//     }
-//     secondCard++;
-//     thirdCard = secondCard + 1;
-//   }
-//   startIndex ++;
-//   secondCard = startIndex + 1;
-//   thirdCard = secondCard + 1;
-// }
-// return;
-// };
 
 export const checkFeature = (selectedCards, feature) => {
   const featureValues = selectedCards.map(card => card[feature]);
@@ -87,7 +52,6 @@ export const checkSet = (set) => {
   }
 
   return true;
-  // return (checkFeature(set, 'color') && checkFeature(set, 'count') && checkFeature(set, 'shape') && checkFeature(set, 'shading'))
 };
 
 export const replaceCards = (deck, set) => {
@@ -108,9 +72,13 @@ export const checkForWin = (deck) => {
   if (deck.length >= 21 || deck.length === 3) {
     return false;
   }
-  // check if no set in remaining cards in deck
 
-  return true;
+   // check if no set in remaining cards in deck
+  if (getSet(deck) === null) {
+    return true
+  }
+
+  return false;
 };
 
 // display winner text only if game completed; otherwise display playersboard only
@@ -119,16 +87,13 @@ export const getWinner = (players) => {
   let lrgstSetCnt = 0;
   let totalSetCnt = 0;
     for (const player in players) {
-      // ({[id] : { setCnt, name }} = player);
-      const id = `${player}`; // const id = player;
-      const { setCnt, name } = players[player];
-      const { setCnt2, name2 } = players[player];
-      const { playerobject3 } = players[id];
+      // const id = `${player}`;
+      console.log('player: ', player);
+      const id = player;
+      const { setCnt } = players[player];
       totalSetCnt += setCnt;
-      console.log('setCnt: ', setCnt, 'setCnt2: ', setCnt2, 'name: ', name, 'name2: ', name2, 'id: ', id, 'player: ', player, 'players: ', players, 'totalSetCnt :', totalSetCnt, 'playerobject3', playerobject3, 'id', id);
       if (setCnt > lrgstSetCnt) {
         winners = [id];
-        // winners = [ player ];
         lrgstSetCnt = setCnt;
       } else if (setCnt === lrgstSetCnt) {
         winners.push(id);
@@ -148,49 +113,37 @@ export const getWinner = (players) => {
     }
 };
 
-// Test
-export const winnerText = getWinner({
-  '01': {
-    name: 'player1',
-    setCnt: 2,
-  },
-  '02': {
-    name: 'player2',
-    setCnt: 20,
-  },
-  '03': {
-    name: 'player3',
-    setCnt: 2,
-  },
-});
-console.log('winnerText', winnerText);
-
+export const getBotSpeed = (difficulty) => {
+  let botSpeed;
+  if (difficulty === '3') {
+    botSpeed = 30000;
+  } else if (difficulty === '2') {
+    botSpeed = 20000;
+  } else {
+    botSpeed = 10000;
+  }
+  return botSpeed;
+};
 
 const clone = x => JSON.parse(JSON.stringify(x));
 
 export const getInitialState = () => ({
   status: 'idle',
   deck: getNewDeck(),
-  board: [],
+  board: [], // boardSize: 12 // don't need both boardSize and board b/c can just grow bo  ard when 3 more cards button clicked
   cardsShowing: 12,
-  // boardSize: 12 // don't need both boardSize and board b/c can just grow board when 3 more cards button clicked
   selectedCards: [],
   isSet: null, // null, false, true => module state isVisible && text
-  activePlayer: '', // '', 'player1' || '0', 'player2' || '01'
-  // score: [0, 0],
+  activePlayer: undefined, // || '01' || '02'
   players: {
     '01': {
-      name: 'player1',
+      name: 'Player 1 (You)',
       setCnt: 0,
     },
     '02': {
-      name: 'bot',
+      name: 'Player 2 (Bot)',
       setCnt: 0,
     },
-    // '03': {
-    //   name: 'player3',
-    //   setCnt: 0,
-    // },
   },
   difficulty: '1',
   timeRemaining: 10,
@@ -212,35 +165,37 @@ export const gameReducer = (state, action) => {
 
     case 'PAUSE': {
       const newState = clone(state);
-      newState.status = 'pause';
+      newState.status = 'paused';
       return newState;
     }
 
     case 'RESUME': {
       const newState = clone(state);
-      newState.status = 'inPlay';
+      newState.status = 'resumed';
       return newState;
     }
 
     case 'CLICK_SET': {
-      if (state.activePlayer) {
-        return state;
-      }
       const newState = clone(state);
+      const { activePlayer, timeRemaining } = newState;
+      if (activePlayer !== undefined) {
+        return newState;
+      }
       newState.activePlayer = action.payload;
+      newState.timeRemaining = timeRemaining - 1;
       return newState;
     }
 
     case 'SELECT_CARD': {
       const newState = clone(state);
-      const { deck, selectedCards, activePlayer, players } = newState;
+      const { selectedCards, activePlayer, players } = newState;
       const { card, player } = action.payload;
 
       if (player !== activePlayer) {
-        return state;
+        return newState;
       }
       if (selectedCards.map(selectedCard => selectedCard.id).includes(card.id)) {
-        return state;
+        return newState;
       }
 
       selectedCards.push(card);
@@ -248,64 +203,76 @@ export const gameReducer = (state, action) => {
 
       if (selectedCards.length === 3) {
         const isSet = checkSet(selectedCards);
-        if (isSet) {
-          // setFound(); TODO: write function // might have function be an action dispatched as part of gameSettingsReducer
-            // maybe trying to divide too much; doesn't neatly separate
-          // could be a dispatch to gameSettingsReducer (this would be gamePlayReducer)
-            // TODO: update players' scores (players, difficulty, status = gameSettings)
-            newState.players[player].setCnt = newState.players[player].setCnt + 1;
-            const newDeck = replaceCards(deck, selectedCards);
-            newState.deck = newDeck;
-            newState.cardsShowing = Math.min(12, newDeck.length);
-        } else {
-          // alert(isSet[1]);
-         // setNotFound(); TODO: write function // might be sufficient to just show alert
-        }
         newState.isSet = isSet;
-        setTimeout(() => {
-          // this.currentSet[0].bg = this.color2;
-          // this.currentSet[1].bg = this.color2;
-          // this.currentSet[2].bg = this.color2;
-          // this.setState({ clicked: 0 });
-          // const isSet = checkSet(selectedCards);
-          newState.isSet = null;
-          // if (isSet) {
-          //   setFound();
-          // } else {
-          //   alert(isSet[1]);
-          // }
-          // newState.isSet = isSet;
-          newState.selectedCards = [];
-          newState.timeRemaining = 10;
-          // newState.turn = null;
-          newState.activePlayer = '';
-
-          // if (checkForWin == true), might want to dispatch action from gameSettingsReducer (settings / context?) (perhaps simply changing status state and/or calling getWinner function)
-          // and dispatch CHECK_FOR_WIN action from within the SELECT_CARD action
-          if (checkForWin(deck)) {
-            // can checkForWin outside of timeout, but then dispatch END_GAME (as opposed to QUIT_GAME) action in gameSettingsReducer
-            // END_GAME can update status, and run the getWinner function
-            const scoreboardText = getWinner(players);
-            console.log('scoreboard: ', scoreboardText);
-            newState.status = 'ended';
-          }
-          console.log('timeout newState: ', newState);
-          return newState;
-        }, 500);
+        newState.timeRemaining = 10;
+        if (isSet) {
+          const newScore = players[activePlayer].setCnt + 1;
+          newState.players[activePlayer].setCnt = newScore;
+        }
       }
-      console.log('newState: ', newState);
       return newState;
     }
 
-    // case 'COUNTDOWN': {
-    //   const newState = clone(state);
-    //   const { timeRemaining } = newState;
-    //   newState.timeRemaining = timeRemaining - 1;
-    //   return newState;
-    // }
+    case 'DEAL': {
+      const newState = clone(state);
+      const { isSet, deck, selectedCards, players } = newState;
+
+      if (isSet === true) {
+        const newDeck = replaceCards(deck, selectedCards);
+        newState.deck = newDeck;
+        newState.cardsShowing = Math.min(12, newDeck.length);
+
+        if (checkForWin(newDeck)) {
+          const scoreboardText = getWinner(players); // not in globl state
+          console.log('scoreboard: ', scoreboardText);
+          newState.status = 'ended';
+        }
+      }
+
+      newState.isSet = null;
+      newState.selectedCards = [];
+      newState.activePlayer = undefined;
+      return newState;
+    }
+
+    case 'COUNTDOWN': {
+      const newState = clone(state);
+      const { timeRemaining } = newState;
+      newState.timeRemaining = timeRemaining - 1;
+      return newState;
+    }
+
+    case 'TIMEOUT': {
+      const newState = clone(state);
+      newState.isSet = null;
+      newState.selectedCards = [];
+      newState.activePlayer = undefined;
+      newState.timeRemaining = 10;
+      return newState;
+    }
+
+    case 'RUN_BOT': {
+      const newState = clone(state);
+      const { deck, cardsShowing, players, status } = newState;
+
+      if (!(status === 'started' || status === 'resumed')) {
+        return newState;
+      }
+
+      const set = getSet(deck, cardsShowing);
+      console.log('set: ', set);
+      if (set.length === 3) {
+        newState.selectedCards = set;
+        newState.activePlayer = '02';
+        newState.isSet = true;
+        const newScore = players['02'].setCnt + 1;
+        newState.players['02'].setCnt = newScore;
+      }
+      return newState;
+    }
 
     case 'ADD_CARDS': {
-      if (state.deck.length < 15) {
+      if (state.deck.length >= 15) {
         return state;
       }
       const newState = clone(state);
@@ -313,14 +280,13 @@ export const gameReducer = (state, action) => {
       return newState;
     }
 
-    // maybe move to gameSettingsReducer
     case 'SELECT_DIFFICULTY': {
       if (state.difficulty === action.payload) {
         return state;
       }
+
       const newState = clone(state);
       newState.difficulty = action.payload;
-      // DIFFICULTY_VALUES = obj providing milliseconds and dropdown label values for state values in gameConstants file
       return newState;
     }
 
