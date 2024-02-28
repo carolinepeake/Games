@@ -1,96 +1,76 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-import { Button } from './StyledComponents';
+import styled from 'styled-components';
 import AddCardsBtn from './AddCardsBtn.js';
+import SetBtn from './SetBtn.js';
+import { capitalizeFirstLetter } from './utils/capitalize'
 import './index.css';
 
+type EntryProps = {
+  //   name:
+  // score:
+};
+
+export const Entry = ({ player }: EntryProps) => {
+
+  const name = capitalizeFirstLetter(player?.name);
+  const score = player?.setCnt;
+
+  return (
+    <Item>
+      <Player>
+        {`${name}: `}
+      </Player>
+      <Score>
+        {`${score} sets`}
+      </Score>
+    </Item>
+  );
+}
+
+
 type ScoreboardProps = {
-  // p1Score:
-  // p2Score:
-  // disabled:
-  // handleClickSet:
-  // timeRemaining:
-  // deck:
-  // setExtraCards: React.Dispatch<React.SetStateAction<array>>;
-  // extraCards:
+  // players: [{
+  //   name:
+  // }]
 };
 
 export default function Scoreboard({
-  // score,
   players,
-  disabled,
+  $disabled,
   handleClickSet,
   timeRemaining,
+  setModalText,
   deck,
-  // setExtraCards,
-  // extraCards,
-  // setBoard,
-  board,
-  gameStatus,
-  handleAddCards
+  handleAddCards,
+  cardsShowing,
+  status,
+  dispatch,
 }: ScoreboardProps) {
-
-  const playerIds = Object.keys(players);
-  const scoreboard = playerIds.map(id => {
-    const name = players[id].name;
-    const score = players[id].setCnt;
-    return (
-      <Item>
-        <Player>
-          You:
-          {name}
-        </Player>
-        <Score>
-          {`${score} sets`}
-          {/* {`${players.01.setCnt} sets`} */}
-        </Score>
-      </Item>
-    );
-  });
 
   return (
     <Container >
 
-      <Item>
-        <Player>
-          You:
+      <Entry player={players['01']}/>
 
-        </Player>
-        <Score>
-          {/* {`${players.01.setCnt} sets`} */}
-        </Score>
-      </Item>
+      {status !== 'ended' && (
+        <BtnContainer>
+          <SetBtn
+            $disabled={$disabled}
+            handleClickSet={handleClickSet}
+            timeRemaining={timeRemaining}
+            setModalText={setModalText}
+            dispatch={dispatch}
+          />
+          <AddCardsBtn
+            deck={deck}
+            handleAddCards={handleAddCards}
+            cardsShowing={cardsShowing}
+            $disabled={$disabled}
+          />
+        </BtnContainer>
+      )}
 
-      {gameStatus !== 'ended' && (
-      <BtnContainer>
-        <SetButton
-          $disabled={disabled}
-          onClick={handleClickSet}
-          timeRemaining={timeRemaining}
-        >
-          SET
-        </SetButton>
-
-        <AddCardsBtn
-          deck={deck}
-          // setBoard={setBoard}
-          handleAddCards={handleAddCards}
-          board={board}
-          disabled={disabled}
-        />
-      </BtnContainer>)}
-
-      <Item>
-        <Player>
-          Bot:
-        </Player>
-        <Score>
-        {/* {`${score[1]} sets`} */}
-        {/* {`${players.02.setCnt} sets`} */}
-        </Score>
-      </Item>
-
-      {scoreboard}
+      <Entry player={players['02']}/>
 
     </Container>
   );
@@ -121,20 +101,6 @@ const Player = styled.span`
 
 const Score = styled.span`
   color: grey;
-`;
-
-const SetButton = styled(Button)`
-  background-color: #165bfb;
-  background-color: var(--darkBtnColor);
-  font-size: 2rem;
-  color: white;
-  ${props => props.$disabled && 'background-color: rgba(22,91,251,0.5)'};
-  ${props => props.$disabled && css`
-    background: linear-gradient(to right top, white ${100 - props.timeRemaining * 10}%, rgba(22,91,251,0.5) ${100 - props.timeRemaining * 10}%);
-  `};
- /* ${props => props.$disabled && `background: linear-gradient(to right top, white 100 - ${props.timeRemaining} * 10%, rgba(22,91,251,0.5) 100 - ${props.timeRemaining} * 10%)`}; */
- /* background: linear-gradient(to right top, white ${props => 100 - props.timeRemaining * 10}%, rgba(22,91,251,0.5) ${props => 100 - props.timeRemaining * 10}%);
-  transition: background 1sec smooth; */
 `;
 
 const BtnContainer = styled.div`
